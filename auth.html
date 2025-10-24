@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup - ScrapSmart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        /* Hide all auth views by default */
+        .auth-view {
+            display: none;
+        }
+        
+        /* Only show the active view */
+        .auth-view.active-view {
+            display: block;
+        }
+        
+        /* Smooth transitions */
+        .auth-view {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-recycle text-emerald-400 text-xl"></i>
+                    <a href="index.html" class="text-xl font-bold">ScrapSmart</a>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="listings.html" class="nav-link">Buy Scrap</a>
+                    <a href="seller.html" class="nav-link">Sell Scrap</a>
+                    <a href="auth.html" class="nav-link active">Login/Signup</a>
+                </nav>
+                <button class="md:hidden text-slate-300" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="md:hidden mt-4 hidden">
+                <div class="flex flex-col space-y-2">
+                    <a href="index.html" class="nav-link mobile-nav">Home</a>
+                    <a href="listings.html" class="nav-link mobile-nav">Buy Scrap</a>
+                    <a href="seller.html" class="nav-link mobile-nav">Sell Scrap</a>
+                    <a href="auth.html" class="nav-link mobile-nav active">Login/Signup</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Page Content -->
+    <main>
+        <div class="max-w-md mx-auto px-4 py-12">
+            <!-- Welcome View - SHOWS FIRST -->
+            <div id="welcomeView" class="auth-view active-view">
+                <div class="auth-card text-center">
+                    <div class="flex items-center justify-center mb-6">
+                        <i class="fas fa-recycle text-emerald-400 text-4xl"></i>
+                        <h1 class="text-3xl font-bold ml-3">ScrapSmart</h1>
+                    </div>
+                    
+                    <h2 class="text-2xl font-semibold mb-4">Welcome to ScrapSmart</h2>
+                    <p class="text-slate-400 mb-8">Join our platform to buy or sell scrap materials</p>
+
+                    <div class="space-y-4 mb-6">
+                        <button class="user-type-btn w-full btn-secondary" data-type="seller">
+                            <i class="fas fa-user-tie mr-2"></i>
+                            I'm a Seller
+                        </button>
+                        <button class="user-type-btn w-full btn-secondary" data-type="buyer">
+                            <i class="fas fa-shopping-cart mr-2"></i>
+                            I'm a Buyer
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-slate-400">Already have an account?</p>
+                        <button class="auth-nav text-emerald-400 hover:text-emerald-300 font-medium mt-2" data-view="login">
+                            Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login View - HIDDEN until "Sign In" clicked -->
+            <div id="loginView" class="auth-view">
+                <div class="auth-card">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-semibold">Sign In to Your Account</h2>
+                        <p class="text-slate-400 mt-2">Welcome back! Please enter your details</p>
+                    </div>
+
+                    <form id="loginForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-input"
+                                placeholder="Enter your email"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                class="form-input"
+                                placeholder="Enter your password"
+                                required
+                            />
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded bg-slate-700 border-slate-600 text-emerald-500 focus:ring-emerald-500">
+                                <span class="text-sm text-slate-400 ml-2">Remember me</span>
+                            </label>
+                            <button type="button" class="text-sm text-emerald-400 hover:text-emerald-300">
+                                Forgot password?
+                            </button>
+                        </div>
+
+                        <button type="submit" class="w-full btn-primary py-3">
+                            Sign In
+                        </button>
+
+                        <div class="relative my-6">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-slate-600"></div>
+                            </div>
+                            <div class="relative flex justify-center text-sm">
+                                <span class="px-2 bg-slate-800 text-slate-400">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="w-full btn-secondary flex items-center justify-center py-3">
+                            <i class="fab fa-google mr-3"></i>
+                            Continue with Google
+                        </button>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-slate-400">Don't have an account?</p>
+                        <button class="auth-nav text-emerald-400 hover:text-emerald-300 font-semibold mt-2" data-view="welcome">
+                            Create an account
+                        </button>
+                    </div>
+
+                    <div class="mt-6">
+                        <button class="auth-nav w-full btn-secondary" data-view="welcome">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup View - HIDDEN until "I'm a Seller/Buyer" clicked -->
+            <div id="signupView" class="auth-view">
+                <div class="auth-card">
+                    <div class="text-center mb-8">
+                        <h2 id="signupTitle" class="text-2xl font-semibold">Sign Up as Buyer</h2>
+                        <p class="text-slate-400 mt-2">Create your account to get started</p>
+                    </div>
+
+                    <form id="signupForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">First Name</label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    class="form-input"
+                                    placeholder="First name"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Last Name</label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    class="form-input"
+                                    placeholder="Last name"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-input"
+                                placeholder="Enter your email"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Phone Number</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                class="form-input"
+                                placeholder="Enter your phone number"
+                                required
+                            />
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-input"
+                                    placeholder="Create a password"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
+                                <input
+                                    type="password"
+                                    name="confirmPassword"
+                                    class="form-input"
+                                    placeholder="Confirm your password"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Seller-specific fields -->
+                        <div id="sellerFields" class="hidden space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Business Name</label>
+                                    <input
+                                        type="text"
+                                        name="businessName"
+                                        class="form-input"
+                                        placeholder="Your business name"
+                                    />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-300 mb-2">Business Type</label>
+                                    <select name="businessType" class="form-input">
+                                        <option value="">Select business type</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="company">Company</option>
+                                        <option value="trader">Trader</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Business Address</label>
+                                <textarea
+                                    name="businessAddress"
+                                    class="form-input"
+                                    rows="2"
+                                    placeholder="Your business address"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-700/30 rounded-lg p-4">
+                            <label class="flex items-start">
+                                <input type="checkbox" class="rounded bg-slate-700 border-slate-600 text-emerald-500 focus:ring-emerald-500 mt-1" required>
+                                <span class="text-sm text-slate-300 ml-2">
+                                    I agree to the <a href="#" class="text-emerald-400 hover:text-emerald-300">Terms of Service</a> and <a href="#" class="text-emerald-400 hover:text-emerald-300">Privacy Policy</a>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full btn-primary py-3">
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <p class="text-slate-400">Already have an account?</p>
+                        <button class="auth-nav text-emerald-400 hover:text-emerald-300 font-semibold mt-2" data-view="login">
+                            Sign In
+                        </button>
+                    </div>
+
+                    <div class="mt-6">
+                        <button class="auth-nav w-full btn-secondary" data-view="welcome">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation View - HIDDEN until signup form submitted -->
+            <div id="confirmationView" class="auth-view">
+                <div class="auth-card text-center">
+                    <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 mx-auto mb-6">
+                        <i class="fas fa-envelope-open text-3xl"></i>
+                    </div>
+                    
+                    <h2 class="text-2xl font-semibold mb-3">Verify Your Email</h2>
+                    <p class="text-slate-400 mb-2">We've sent a 6-digit verification code to</p>
+                    <p class="text-emerald-400 font-semibold mb-8" id="userEmail">user@example.com</p>
+
+                    <form id="verificationForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-3">Enter Verification Code</label>
+                            <div class="flex justify-between space-x-2">
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full btn-primary py-3">
+                            Verify Email
+                        </button>
+
+                        <div class="text-center">
+                            <p class="text-slate-400 mb-2">Didn't receive the code?</p>
+                            <button type="button" id="resendBtn" class="text-emerald-400 hover:text-emerald-300 font-semibold disabled:text-slate-500" disabled>
+                                Resend code in <span id="countdown">60</span>s
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mt-8 pt-6 border-t border-slate-700">
+                        <button class="auth-nav text-slate-400 hover:text-white inline-flex items-center" data-view="signup">
+                            <i class="fas fa-arrow-left mr-2"></i>
+                            Back to Sign Up
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-recycle text-emerald-400 text-xl"></i>
+                        <h3 class="text-xl font-bold">ScrapSmart</h3>
+                    </div>
+                    <p class="text-slate-400">
+                        Connecting scrap sellers with buyers in a seamless, transparent marketplace.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="listings.html" class="hover:text-white transition-colors">Buy Scrap</a></li>
+                        <li><a href="seller.html" class="hover:text-white transition-colors">Sell Scrap</a></li>
+                        <li><a href="auth.html" class="hover:text-white transition-colors">Login/Signup</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Categories</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="listings.html?category=metal" class="hover:text-white transition-colors">Metals</a></li>
+                        <li><a href="listings.html?category=electronics" class="hover:text-white transition-colors">Electronics</a></li>
+                        <li><a href="listings.html?category=batteries" class="hover:text-white transition-colors">Batteries</a></li>
+                        <li><a href="listings.html?category=automotive" class="hover:text-white transition-colors">Automotive</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            info@scrapsmart.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            +1 (555) 123-4567
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Mumbai, India
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-700/50 mt-8 pt-6 text-center text-slate-400">
+                <p>&copy; 2024 ScrapSmart. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Authentication page functionality
+        class AuthPage {
+            constructor() {
+                this.currentView = 'welcome';
+                this.userType = 'buyer';
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.showView('welcome');
+                
+                // Mobile menu functionality
+                document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            setupEventListeners() {
+                // User type selection
+                document.querySelectorAll('.user-type-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.userType = btn.getAttribute('data-type');
+                        this.showView('signup');
+                    });
+                });
+
+                // Navigation between auth views
+                document.querySelectorAll('.auth-nav').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const view = btn.getAttribute('data-view');
+                        this.showView(view);
+                    });
+                });
+
+                // Form submissions
+                const loginForm = document.getElementById('loginForm');
+                const signupForm = document.getElementById('signupForm');
+                const verificationForm = document.getElementById('verificationForm');
+
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                }
+
+                if (signupForm) {
+                    signupForm.addEventListener('submit', (e) => this.handleSignup(e));
+                }
+
+                if (verificationForm) {
+                    verificationForm.addEventListener('submit', (e) => this.handleVerification(e));
+                }
+
+                // Verification code input handling
+                this.setupVerificationInputs();
+                
+                // Resend code button
+                document.getElementById('resendBtn')?.addEventListener('click', () => {
+                    this.handleResendCode();
+                });
+            }
+
+            showView(view) {
+                this.currentView = view;
+                
+                // Hide all views
+                document.querySelectorAll('.auth-view').forEach(view => {
+                    view.classList.remove('active-view');
+                });
+
+                // Show selected view
+                const targetView = document.getElementById(`${view}View`);
+                if (targetView) {
+                    targetView.classList.add('active-view');
+                }
+
+                // Update form titles based on user type
+                if (view === 'signup') {
+                    this.updateSignupTitle();
+                }
+            }
+
+            updateSignupTitle() {
+                const title = document.getElementById('signupTitle');
+                if (title) {
+                    title.textContent = `Sign Up as ${this.userType === 'seller' ? 'Seller' : 'Buyer'}`;
+                    
+                    // Show/hide seller fields
+                    const sellerFields = document.getElementById('sellerFields');
+                    if (sellerFields) {
+                        if (this.userType === 'seller') {
+                            sellerFields.classList.remove('hidden');
+                        } else {
+                            sellerFields.classList.add('hidden');
+                        }
+                    }
+                }
+            }
+
+            setupVerificationInputs() {
+                const inputs = document.querySelectorAll('.verification-digit');
+                inputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        // Only allow numbers
+                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        
+                        if (e.target.value && index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                        
+                        // Auto-submit when all fields are filled
+                        const allFilled = Array.from(inputs).every(input => input.value);
+                        if (allFilled) {
+                            document.getElementById('verificationForm').dispatchEvent(new Event('submit'));
+                        }
+                    });
+                    
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    });
+                });
+            }
+
+            handleLogin(e) {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+
+                // Simulate login process
+                window.scrapSmartApp.showNotification('Login successful!', 'success');
+                
+                // Redirect based on user type
+                setTimeout(() => {
+                    window.location.href = 'listings.html';
+                }, 1000);
+            }
+
+            handleSignup(e) {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+                data.userType = this.userType;
+
+                // Store email for confirmation page
+                if (data.email) {
+                    document.getElementById('userEmail').textContent = data.email;
+                }
+
+                // Show confirmation view
+                this.showView('confirmation');
+                
+                // Start countdown timer
+                this.startCountdown();
+            }
+
+            handleVerification(e) {
+                e.preventDefault();
+                
+                // Get the verification code
+                const inputs = document.querySelectorAll('.verification-digit');
+                const code = Array.from(inputs).map(input => input.value).join('');
+                
+                if (code.length !== 6) {
+                    window.scrapSmartApp.showNotification('Please enter the complete 6-digit code', 'error');
+                    return;
+                }
+                
+                // Simulate verification process
+                window.scrapSmartApp.showNotification('Email verified successfully!', 'success');
+                
+                setTimeout(() => {
+                    // Redirect to appropriate page based on user type
+                    if (this.userType === 'seller') {
+                        window.location.href = 'seller.html';
+                    } else {
+                        window.location.href = 'listings.html';
+                    }
+                }, 1000);
+            }
+
+            startCountdown() {
+                let countdown = 60;
+                const countdownElement = document.getElementById('countdown');
+                const resendBtn = document.getElementById('resendBtn');
+                
+                if (!countdownElement || !resendBtn) return;
+                
+                const timer = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown === 0) {
+                        clearInterval(timer);
+                        resendBtn.disabled = false;
+                        resendBtn.innerHTML = 'Resend code';
+                    }
+                }, 1000);
+            }
+
+            handleResendCode() {
+                window.scrapSmartApp.showNotification('Verification code sent!', 'success');
+                
+                // Reset countdown
+                this.startCountdown();
+                
+                // Disable button again
+                const resendBtn = document.getElementById('resendBtn');
+                if (resendBtn) {
+                    resendBtn.disabled = true;
+                }
+            }
+        }
+
+        // Initialize auth page when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new AuthPage();
+        });
+    </script>
+</body>
+</html>
