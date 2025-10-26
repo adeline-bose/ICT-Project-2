@@ -98,12 +98,18 @@
             <!-- Login View - HIDDEN until "Sign In" clicked -->
             <div id="loginView" class="auth-view">
                 <div class="auth-card">
+
+                    <div id="loginSuccessMessage" class="hidden bg-emerald-500/20 border border-emerald-500 text-emerald-300 px-4 py-3 rounded-lg mb-6 text-sm">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <strong>Account Creation Successful!</strong>
+                    </div>
+
                     <div class="text-center mb-8">
                         <h2 class="text-2xl font-semibold">Sign In to Your Account</h2>
                         <p class="text-slate-400 mt-2">Welcome back! Please enter your details</p>
                     </div>
 
-                    <form id="loginForm" class="space-y-6">
+                    <form id="loginForm" class="space-y-6" action="src/login.php" method="POST">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
                             <input
@@ -177,13 +183,13 @@
                         <p class="text-slate-400 mt-2">Create your account to get started</p>
                     </div>
 
-                    <form id="signupForm" class="space-y-6">
+                    <form id="signupForm" action="src/register.php" method="POST" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-2">First Name</label>
                                 <input
                                     type="text"
-                                    name="firstName"
+                                    name="fname"
                                     class="form-input"
                                     placeholder="First name"
                                 />
@@ -192,7 +198,7 @@
                                 <label class="block text-sm font-medium text-slate-300 mb-2">Last Name</label>
                                 <input
                                     type="text"
-                                    name="lastName"
+                                    name="lname"
                                     class="form-input"
                                     placeholder="Last name"
                                 />
@@ -372,7 +378,22 @@
 
             init() {
                 this.setupEventListeners();
-                this.showView('welcome');
+                const urlParams = new URLSearchParams(window.location.search);
+                const viewToLoad = urlParams.get('view');
+
+                if (viewToLoad === 'login') {
+                    // If URL has ?view=login, show the login form
+                    this.showView('login');
+                } else {
+                    // Otherwise, show the default welcome view
+                    this.showView('welcome');
+                }
+
+                // Check for a status message
+                    const status = urlParams.get('status');
+                    if (status === 'success') {
+                        this.showSuccessMessage(); // <-- Call the new function
+                    }
                 
                 // Mobile menu functionality
                 document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
@@ -380,6 +401,13 @@
                     mobileMenu.classList.toggle('hidden');
                 });
             }
+
+            showSuccessMessage() {
+                    const messageDiv = document.getElementById('loginSuccessMessage');
+                    if (messageDiv) {
+                        messageDiv.classList.remove('hidden');
+                    }
+                }
 
             setupEventListeners() {
                 // User type selection
@@ -400,7 +428,7 @@
                     });
                 });
 
-                // Form submissions
+            /*    // Form submissions
                 const loginForm = document.getElementById('loginForm');
                 const signupForm = document.getElementById('signupForm');
 
@@ -408,9 +436,9 @@
                     loginForm.addEventListener('submit', (e) => this.handleLogin(e));
                 }
 
-                if (signupForm) {
+               if (signupForm) {
                     signupForm.addEventListener('submit', (e) => this.handleSignup(e));
-                }
+                   }             Commented out on 26/10 to validate sign up using PHP -Adeline   */
             }
 
             showView(view) {
