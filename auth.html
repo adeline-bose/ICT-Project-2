@@ -310,51 +310,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Confirmation View - HIDDEN until signup form submitted -->
-            <div id="confirmationView" class="auth-view">
-                <div class="auth-card text-center">
-                    <div class="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 mx-auto mb-6">
-                        <i class="fas fa-envelope-open text-3xl"></i>
-                    </div>
-                    
-                    <h2 class="text-2xl font-semibold mb-3">Verify Your Email</h2>
-                    <p class="text-slate-400 mb-2">We've sent a 6-digit verification code to</p>
-                    <p class="text-emerald-400 font-semibold mb-8" id="userEmail">user@example.com</p>
-
-                    <form id="verificationForm" class="space-y-6">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-3">Enter Verification Code</label>
-                            <div class="flex justify-between space-x-2">
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                                <input type="text" maxlength="1" class="form-input text-center text-xl font-semibold h-14 verification-digit" pattern="[0-9]" required>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="w-full btn-primary py-3">
-                            Verify Email
-                        </button>
-
-                        <div class="text-center">
-                            <p class="text-slate-400 mb-2">Didn't receive the code?</p>
-                            <button type="button" id="resendBtn" class="text-emerald-400 hover:text-emerald-300 font-semibold disabled:text-slate-500" disabled>
-                                Resend code in <span id="countdown">60</span>s
-                            </button>
-                        </div>
-                    </form>
-
-                    <div class="mt-8 pt-6 border-t border-slate-700">
-                        <button class="auth-nav text-slate-400 hover:text-white inline-flex items-center" data-view="signup">
-                            <i class="fas fa-arrow-left mr-2"></i>
-                            Back to Sign Up
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 
@@ -456,7 +411,6 @@
                 // Form submissions
                 const loginForm = document.getElementById('loginForm');
                 const signupForm = document.getElementById('signupForm');
-                const verificationForm = document.getElementById('verificationForm');
 
                 if (loginForm) {
                     loginForm.addEventListener('submit', (e) => this.handleLogin(e));
@@ -465,18 +419,6 @@
                 if (signupForm) {
                     signupForm.addEventListener('submit', (e) => this.handleSignup(e));
                 }
-
-                if (verificationForm) {
-                    verificationForm.addEventListener('submit', (e) => this.handleVerification(e));
-                }
-
-                // Verification code input handling
-                this.setupVerificationInputs();
-                
-                // Resend code button
-                document.getElementById('resendBtn')?.addEventListener('click', () => {
-                    this.handleResendCode();
-                });
             }
 
             showView(view) {
@@ -516,44 +458,14 @@
                 }
             }
 
-            setupVerificationInputs() {
-                const inputs = document.querySelectorAll('.verification-digit');
-                inputs.forEach((input, index) => {
-                    input.addEventListener('input', (e) => {
-                        // Only allow numbers
-                        e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                        
-                        if (e.target.value && index < inputs.length - 1) {
-                            inputs[index + 1].focus();
-                        }
-                        
-                        // Auto-submit when all fields are filled
-                        const allFilled = Array.from(inputs).every(input => input.value);
-                        if (allFilled) {
-                            document.getElementById('verificationForm').dispatchEvent(new Event('submit'));
-                        }
-                    });
-                    
-                    input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                            inputs[index - 1].focus();
-                        }
-                    });
-                });
-            }
-
             handleLogin(e) {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const data = Object.fromEntries(formData);
 
-                // Simulate login process
-                window.scrapSmartApp.showNotification('Login successful!', 'success');
-                
-                // Redirect based on user type
-                setTimeout(() => {
-                    window.location.href = 'listings.html';
-                }, 1000);
+                // TODO: Implement actual login with backend API
+                // Session-based redirect will be handled by backend
+                console.log('Login data:', data);
             }
 
             handleSignup(e) {
@@ -562,73 +474,15 @@
                 const data = Object.fromEntries(formData);
                 data.userType = this.userType;
 
-                // Store email for confirmation page
-                if (data.email) {
-                    document.getElementById('userEmail').textContent = data.email;
-                }
-
-                // Show confirmation view
-                this.showView('confirmation');
-                
-                // Start countdown timer
-                this.startCountdown();
-            }
-
-            handleVerification(e) {
-                e.preventDefault();
-                
-                // Get the verification code
-                const inputs = document.querySelectorAll('.verification-digit');
-                const code = Array.from(inputs).map(input => input.value).join('');
-                
-                if (code.length !== 6) {
-                    window.scrapSmartApp.showNotification('Please enter the complete 6-digit code', 'error');
+                // Validate password match
+                if (data.password !== data.confirmPassword) {
+                    window.scrapSmartApp.showNotification('Passwords do not match!', 'error');
                     return;
                 }
-                
-                // Simulate verification process
-                window.scrapSmartApp.showNotification('Email verified successfully!', 'success');
-                
-                setTimeout(() => {
-                    // Redirect to appropriate page based on user type
-                    if (this.userType === 'seller') {
-                        window.location.href = 'seller.html';
-                    } else {
-                        window.location.href = 'listings.html';
-                    }
-                }, 1000);
-            }
 
-            startCountdown() {
-                let countdown = 60;
-                const countdownElement = document.getElementById('countdown');
-                const resendBtn = document.getElementById('resendBtn');
-                
-                if (!countdownElement || !resendBtn) return;
-                
-                const timer = setInterval(() => {
-                    countdown--;
-                    countdownElement.textContent = countdown;
-                    
-                    if (countdown === 0) {
-                        clearInterval(timer);
-                        resendBtn.disabled = false;
-                        resendBtn.innerHTML = 'Resend code';
-                    }
-                }, 1000);
-            }
-
-            handleResendCode() {
-                window.scrapSmartApp.showNotification('Verification code sent!', 'success');
-                
-                // Reset countdown
-                this.startCountdown();
-                
-                // Disable button again
-                const resendBtn = document.getElementById('resendBtn');
-                if (resendBtn) {
-                    resendBtn.disabled = true;
-                }
+                // TODO: Implement actual signup with backend API
+                // Session-based redirect will be handled by backend
+                console.log('Signup data:', data);
             }
         }
 
