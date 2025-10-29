@@ -72,30 +72,30 @@
                 </div>
 
                 <div class="flex overflow-x-auto pb-2 -mx-2 scrollbar-hide">
-                    <button data-filter="all" class="filter-btn active-filter">
+                    <a href="listings.html" data-filter="all" class="filter-btn active-filter">
                         <i class="fas fa-filter mr-2"></i>
                         All Types
-                    </button>
-                    <button data-filter="metal" class="filter-btn">
+                    </a>
+                    <a href="listings.html?category=metal" data-filter="metal" class="filter-btn">
                         <i class="fas fa-hammer mr-2"></i>
                         Metal
-                    </button>
-                    <button data-filter="electronics" class="filter-btn">
+                    </a>
+                    <a href="listings.html?category=electronics" data-filter="electronics" class="filter-btn">
                         <i class="fas fa-microchip mr-2"></i>
                         Electronics
-                    </button>
-                    <button data-filter="batteries" class="filter-btn">
+                    </a>
+                    <a href="listings.html?category=batteries" data-filter="batteries" class="filter-btn">
                         <i class="fas fa-battery-full mr-2"></i>
                         Batteries
-                    </button>
-                    <button data-filter="wires" class="filter-btn">
+                    </a>
+                    <a href="listings.html?category=wires" data-filter="wires" class="filter-btn">
                         <i class="fas fa-bolt mr-2"></i>
                         Wires
-                    </button>
-                    <button data-filter="automotive" class="filter-btn">
+                    </a>
+                    <a href="listings.html?category=automotive" data-filter="automotive" class="filter-btn">
                         <i class="fas fa-car mr-2"></i>
                         Automotive
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -106,22 +106,8 @@
 
             <!-- Pagination -->
             <div class="mt-12 flex justify-center">
-                <div class="inline-flex rounded-md shadow-sm">
-                    <button class="px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-l-lg hover:bg-slate-700/50">
-                        Previous
-                    </button>
-                    <button class="px-4 py-2 bg-emerald-600 border border-emerald-600 text-white">
-                        1
-                    </button>
-                    <button class="px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50">
-                        2
-                    </button>
-                    <button class="px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-700/50">
-                        3
-                    </button>
-                    <button class="px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-r-lg hover:bg-slate-700/50">
-                        Next
-                    </button>
+                <div id="pagination" class="inline-flex rounded-md shadow-sm">
+                    <!-- Pagination buttons will be dynamically inserted here -->
                 </div>
             </div>
         </div>

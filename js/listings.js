@@ -14,6 +14,7 @@ class ListingsPage {
     init() {
         this.loadListings();
         this.setupEventListeners();
+        this.loadCategoryFromURL();
         this.renderListings();
     }
 
@@ -97,6 +98,84 @@ class ListingsPage {
                 rating: 4.7,
                 posted: "3d ago",
                 gradient: "from-yellow-500 to-amber-600"
+            },
+            {
+                id: 7,
+                title: "Electrical Wiring (Stripped)",
+                type: "wires",
+                weight: "30kg",
+                price: "$5.50/kg",
+                location: "Gold Coast, QLD",
+                image: "⚡",
+                seller: "WireRecyclers",
+                rating: 4.4,
+                posted: "4d ago",
+                gradient: "from-indigo-500 to-purple-600"
+            },
+            {
+                id: 8,
+                title: "Car Parts (Various)",
+                type: "automotive",
+                weight: "Mixed lot",
+                price: "$250",
+                location: "Canberra, ACT",
+                image: "🚗",
+                seller: "AutoSalvageAU",
+                rating: 4.6,
+                posted: "5d ago",
+                gradient: "from-red-500 to-orange-600"
+            },
+            {
+                id: 9,
+                title: "Lithium Batteries (Rechargeable)",
+                type: "batteries",
+                weight: "12 units",
+                price: "$22/unit",
+                location: "Sydney, NSW",
+                image: "🔋",
+                seller: "BatteryWorld",
+                rating: 4.7,
+                posted: "6d ago",
+                gradient: "from-teal-500 to-green-600"
+            },
+            {
+                id: 10,
+                title: "Circuit Boards (E-waste)",
+                type: "electronics",
+                weight: "15kg",
+                price: "$12/kg",
+                location: "Melbourne, VIC",
+                image: "💾",
+                seller: "TechRecyclers",
+                rating: 4.4,
+                posted: "1w ago",
+                gradient: "from-violet-500 to-purple-600"
+            },
+            {
+                id: 11,
+                title: "Brass Fittings",
+                type: "metal",
+                weight: "35kg",
+                price: "$6.50/kg",
+                location: "Brisbane, QLD",
+                image: "🔩",
+                seller: "MetalWorks",
+                rating: 4.5,
+                posted: "1w ago",
+                gradient: "from-yellow-600 to-orange-500"
+            },
+            {
+                id: 12,
+                title: "LED Light Strips (Bulk)",
+                type: "electronics",
+                weight: "50 units",
+                price: "$3/unit",
+                location: "Perth, WA",
+                image: "💡",
+                seller: "LightingPro",
+                rating: 4.6,
+                posted: "1w ago",
+                gradient: "from-cyan-500 to-blue-600"
             }
         ];
 
@@ -104,13 +183,6 @@ class ListingsPage {
     }
 
     setupEventListeners() {
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.setActiveFilter(btn.getAttribute('data-filter'));
-            });
-        });
-
         // Search input
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
@@ -119,21 +191,61 @@ class ListingsPage {
             });
         }
 
-        // Pagination
-        document.querySelectorAll('.page-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const page = parseInt(btn.getAttribute('data-page'));
-                this.setCurrentPage(page);
+        // Search button
+        const searchBtn = document.getElementById('searchBtn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                this.applyFilters();
             });
-        });
+        }
 
-        // View details buttons
+        // Pagination - use event delegation since buttons are dynamically created
         document.addEventListener('click', (e) => {
+            const pageBtn = e.target.closest('.page-btn');
+            if (pageBtn) {
+                const page = parseInt(pageBtn.getAttribute('data-page'));
+                if (!isNaN(page) && page > 0) {
+                    this.setCurrentPage(page);
+                }
+            }
+
+            // View details buttons
             if (e.target.closest('.view-details')) {
                 const listingId = e.target.closest('.view-details').getAttribute('data-id');
                 this.viewListingDetails(listingId);
             }
         });
+    }
+
+    loadCategoryFromURL() {
+        // Get the category from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+
+        // If category exists in URL, set it as active filter
+        if (category) {
+            this.activeFilter = category.toLowerCase();
+            console.log('Category from URL:', this.activeFilter);
+        } else {
+            this.activeFilter = 'all';
+            console.log('No category in URL, showing all');
+        }
+
+        // Update UI to reflect active filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        console.log('Found', filterButtons.length, 'filter buttons');
+
+        filterButtons.forEach(btn => {
+            const btnFilter = btn.getAttribute('data-filter');
+            btn.classList.remove('active-filter');
+            if (btnFilter === this.activeFilter) {
+                btn.classList.add('active-filter');
+                console.log('Set active filter on button:', btnFilter);
+            }
+        });
+
+        // Apply the filter
+        this.applyFilters();
     }
 
     setActiveFilter(filter) {
@@ -156,8 +268,31 @@ class ListingsPage {
     }
 
     setCurrentPage(page) {
+        const totalPages = Math.ceil(this.filteredListings.length / this.itemsPerPage);
+
+        // Validate page number
+        if (page < 1 || page > totalPages) {
+            console.warn('Invalid page number:', page);
+            return;
+        }
+
         this.currentPage = page;
         this.renderListings();
+
+        // Scroll to top of listings with offset
+        const listingsContainer = document.getElementById('listingsContainer');
+        if (listingsContainer) {
+            const offset = 100; // for a gap from the header
+            const elementPosition = listingsContainer.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        console.log('Changed to page:', page);
     }
 
     applyFilters() {
@@ -260,16 +395,25 @@ class ListingsPage {
     renderPagination() {
         const totalPages = Math.ceil(this.filteredListings.length / this.itemsPerPage);
         const paginationContainer = document.getElementById('pagination');
-        
-        if (!paginationContainer || totalPages <= 1) {
-            paginationContainer.style.display = 'none';
+
+        if (!paginationContainer) {
+            console.warn('Pagination container not found');
             return;
         }
 
-        paginationContainer.style.display = 'flex';
-        
+        // hide pagination if only one page or no results
+        if (totalPages <= 1) {
+            paginationContainer.innerHTML = '';
+            paginationContainer.parentElement.style.display = 'none';
+            return;
+        }
+
+        paginationContainer.parentElement.style.display = 'flex';
+
         let paginationHTML = `
-            <button class="page-btn px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-l-lg hover:bg-slate-700/50" 
+            <button class="page-btn px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-l-lg hover:bg-slate-700/50 ${
+                this.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+            }"
                     ${this.currentPage === 1 ? 'disabled' : ''} data-page="${this.currentPage - 1}">
                 Previous
             </button>
@@ -278,8 +422,8 @@ class ListingsPage {
         for (let i = 1; i <= totalPages; i++) {
             paginationHTML += `
                 <button class="page-btn px-4 py-2 border border-slate-700/50 ${
-                    i === this.currentPage 
-                        ? 'bg-emerald-600 border-emerald-600 text-white' 
+                    i === this.currentPage
+                        ? 'bg-emerald-600 border-emerald-600 text-white'
                         : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50'
                 }" data-page="${i}">
                     ${i}
@@ -288,23 +432,34 @@ class ListingsPage {
         }
 
         paginationHTML += `
-            <button class="page-btn px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-r-lg hover:bg-slate-700/50" 
+            <button class="page-btn px-4 py-2 bg-slate-800/50 border border-slate-700/50 text-slate-300 rounded-r-lg hover:bg-slate-700/50 ${
+                this.currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
+            }"
                     ${this.currentPage === totalPages ? 'disabled' : ''} data-page="${this.currentPage + 1}">
                 Next
             </button>
         `;
 
         paginationContainer.innerHTML = paginationHTML;
+        console.log('Pagination rendered:', totalPages, 'pages, current page:', this.currentPage);
     }
 
     viewListingDetails(listingId) {
-        // Store the listing ID for the details page
+        // store the listing ID for the details page
         sessionStorage.setItem('currentListingId', listingId);
         window.scrapSmartApp.showPage('details');
     }
 }
 
-// Initialize listings page when it becomes active
+// Initialize listings page when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // only initialize if we're on the listings page
+    if (document.getElementById('listingsContainer')) {
+        new ListingsPage();
+    }
+});
+
+// Initialize listings page when it becomes active (for SPA navigation)
 window.addEventListener('pageChanged', (event) => {
     if (event.detail.page === 'listings') {
         new ListingsPage();
