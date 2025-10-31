@@ -78,7 +78,7 @@ $result = $conn->query($sql);
 
   <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="mb-0">Admin Dashboard</h2>
-      <a href="logout.php" class="btn btn-danger btn-sm">Logout</a>
+      <a href="src/logout.php" class="btn btn-danger btn-sm">Logout</a>
     </div>
 
   <div class="container mt-5">
