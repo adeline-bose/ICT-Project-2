@@ -16,12 +16,13 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/ICT-Project-2/">
     <title>Login/Signup - ScrapSmart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
     <style>
         /* Hide all auth views by default */
         .auth-view {
@@ -51,13 +52,13 @@ $result = $conn->query($sql);
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-recycle text-emerald-400 text-xl"></i>
-                    <a href="../index.html" class="text-xl font-bold">ScrapSmart</a>
+                    <a href="index.html" class="text-xl font-bold">ScrapSmart</a>
                 </div>
                 <nav class="hidden md:flex space-x-6">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../listings.html" class="nav-link">Buy Scrap</a>
-                    <a href="../seller.html" class="nav-link">Sell Scrap</a>
-                    <a href="../auth.html" class="nav-link active">Login/Signup</a>
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="listings.html" class="nav-link">Buy Scrap</a>
+                    <a href="seller.html" class="nav-link">Sell Scrap</a>
+                    <a href="auth.html" class="nav-link active">Login/Signup</a>
                 </nav>
                 <button class="md:hidden text-slate-300" id="mobileMenuBtn">
                     <i class="fas fa-bars text-xl"></i>
@@ -66,10 +67,10 @@ $result = $conn->query($sql);
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden mt-4 hidden">
                 <div class="flex flex-col space-y-2">
-                    <a href="../index.html" class="nav-link mobile-nav">Home</a>
-                    <a href="../listings.html" class="nav-link mobile-nav">Buy Scrap</a>
-                    <a href="../seller.html" class="nav-link mobile-nav">Sell Scrap</a>
-                    <a href="../auth.html" class="nav-link mobile-nav active">Login/Signup</a>
+                    <a href="index.html" class="nav-link mobile-nav">Home</a>
+                    <a href="listings.html" class="nav-link mobile-nav">Buy Scrap</a>
+                    <a href="seller.html" class="nav-link mobile-nav">Sell Scrap</a>
+                    <a href="auth.html" class="nav-link mobile-nav active">Login/Signup</a>
                 </div>
             </div>
         </div>
