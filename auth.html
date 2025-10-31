@@ -184,6 +184,9 @@
                     </div>
 
                     <form id="signupForm" action="src/register.php" method="POST" class="space-y-6">
+
+                        <input type="hidden" name="role" id="signupRole">
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-300 mb-2">First Name</label>
@@ -253,7 +256,7 @@
                                     <label class="block text-sm font-medium text-slate-300 mb-2">Business Name</label>
                                     <input
                                         type="text"
-                                        name="businessName"
+                                        name="bname"
                                         class="form-input"
                                         placeholder="Your business name"
                                     />
@@ -465,6 +468,9 @@
                 const title = document.getElementById('signupTitle');
                 if (title) {
                     title.textContent = `Sign Up as ${this.userType === 'seller' ? 'Seller' : 'Buyer'}`;
+
+                    // This sets the hidden input's value to 'buyer' or 'seller'
+                    document.getElementById('signupRole').value = this.userType;
                     
                     // Show/hide seller fields
                     const sellerFields = document.getElementById('sellerFields');
