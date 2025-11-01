@@ -1,11 +1,15 @@
 <?php
 include('session.php'); // This starts the session
 
-// THE SECURITY CHECK
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'seller') {
-    // If they are not a seller, redirect them to the login page
-    header("Location: auth.html");
-    exit(); // Stop the script from running any further
+if (!isset($_SESSION['user_id'])) { 
+    // Not logged in. Redirect with a "login_required" error.
+    header("Location: auth.html?error=login_required");
+    exit();
+}
+if ($_SESSION['role'] !== 'seller') {
+    // Logged in, but wrong role. Redirect with an "unauthorized" error.
+    header("Location: auth.html?error=unauthorized");
+    exit();
 }
 ?>
 
