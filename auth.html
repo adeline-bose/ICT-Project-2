@@ -457,6 +457,13 @@
                 if (view === 'signup') {
                     this.updateSignupTitle();
                 }
+
+                // Scroll to top of the form when back button is clicked
+                // for a better user experience
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'instant'
+                });
             }
 
             updateSignupTitle() {
