@@ -100,6 +100,11 @@
             <div id="loginView" class="auth-view">
                 <div class="auth-card">
 
+                    <div id="loginErrorMessage" class="hidden bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg mb-6 text-sm">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <span id="loginErrorText"></span> 
+                    </div>
+
                     <div id="loginSuccessMessage" class="hidden bg-emerald-500/20 border border-emerald-500 text-emerald-300 px-4 py-3 rounded-lg mb-6 text-sm">
                     <i class="fas fa-check-circle mr-2"></i>
                     <strong>Account Creation Successful!</strong>
@@ -398,12 +403,38 @@
                     if (status === 'success') {
                         this.showSuccessMessage(); // <-- Call the new function
                     }
+
+
+                // Check for an error message
+                    const error = urlParams.get('error');
+                    if (error) {
+                        let message = 'An unknown error occurred.'; // Default
+                        
+                        if (error === 'login_required') {
+                            message = 'You must be logged in to access that page.';
+                        } else if (error === 'unauthorized') {
+                            message = 'You do not have permission to access that page.';
+                        }
+                        
+                        this.showErrorMessage(message);
+                    }
             }
 
             showSuccessMessage() {
                     const messageDiv = document.getElementById('loginSuccessMessage');
                     if (messageDiv) {
                         messageDiv.classList.remove('hidden');
+                    }
+                }
+
+            showErrorMessage(message) {
+                    const errorDiv = document.getElementById('loginErrorMessage');
+                    const errorText = document.getElementById('loginErrorText');
+                    if (errorDiv && errorText) {
+                        // Set the specific error text
+                        errorText.textContent = message;
+                        // Show the error box
+                        errorDiv.classList.remove('hidden');
                     }
                 }
 
