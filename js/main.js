@@ -8,6 +8,7 @@ class ScrapSmartApp {
         this.setupNavigation();
         this.setupEventListeners();
         this.setActiveNavLink();
+        this.setupMobileMenu();
     }
 
     setupNavigation() {
@@ -79,6 +80,31 @@ class ScrapSmartApp {
         // Close modals or go back in history
         if (window.location.pathname.includes('details.html')) {
             window.history.back();
+        }
+
+        // close the mobile menu if open
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+        }
+    }
+
+    setupMobileMenu() {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // close the mobile menu when clicking on a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
         }
     }
 
