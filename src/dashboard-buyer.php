@@ -1,9 +1,20 @@
 <?php
 include('session.php');
+
+if (!isset($_SESSION['user_id'])) { 
+    // Not logged in. Redirect.
+    header("Location: /ICT-Project-2/auth.html?view=login&error=login_required");
+    exit();
+}
+if ($_SESSION['role'] !== 'buyer') {
+    // Logged in, but wrong role. Redirect.
+    header("Location: /ICT-Project-2/auth.html?view=login&error=unauthorized");
+    exit();
+}
+
 include('db.php');
 
 $user_id = $_SESSION['user_id'];
-
 $sql = "SELECT * FROM scrap_requests WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -20,8 +31,8 @@ $result = $stmt->get_result();
     <title>Scrap Listings - ScrapSmart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
 </head>
 <body class="min-h-screen gradient-bg">
     <!-- Navigation Header -->
@@ -33,10 +44,12 @@ $result = $stmt->get_result();
                     <a href="index.html" class="text-xl font-bold">ScrapSmart</a>
                 </div>
                 <nav class="hidden md:flex space-x-6">
-                    <a href="../index.html" class="nav-link">Home</a>
-                    <a href="../listings.html" class="nav-link active">Buy Scrap</a>
-                    <a href="../seller.html" class="nav-link">Sell Scrap</a>
-                    <a href="../auth.html" class="nav-link">Login/Signup</a>
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="listings.html" class="nav-link active">Buy Scrap</a>
+                    <a href="seller.html" class="nav-link">Sell Scrap</a>
+                    <a href="src/logout.php" class="nav-link text-red-400 hover:text-red-300">
+                      <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
                 </nav>
                 <button class="md:hidden text-slate-300" id="mobileMenuBtn">
                     <i class="fas fa-bars text-xl"></i>
@@ -45,10 +58,12 @@ $result = $stmt->get_result();
             <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden mt-4 hidden">
                 <div class="flex flex-col space-y-2">
-                    <a href="../index.html" class="nav-link mobile-nav">Home</a>
-                    <a href="../listings.html" class="nav-link mobile-nav active">Buy Scrap</a>
-                    <a href="../seller.html" class="nav-link mobile-nav">Sell Scrap</a>
-                    <a href="../auth.html" class="nav-link mobile-nav">Login/Signup</a>
+                  <a href="index.html" class="nav-link mobile-nav">Home</a>
+                  <a href="listings.html" class="nav-link mobile-nav active">Buy Scrap</a>
+                  <a href="seller.html" class="nav-link mobile-nav">Sell Scrap</a>
+                  <a href="src/logout.php" class="nav-link mobile-nav text-red-400">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                  </a>
                 </div>
             </div>
         </div>
@@ -160,7 +175,7 @@ $result = $stmt->get_result();
                         <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
                         <li><a href="listings.html" class="hover:text-white transition-colors">Buy Scrap</a></li>
                         <li><a href="seller.html" class="hover:text-white transition-colors">Sell Scrap</a></li>
-                        <li><a href="auth.html" class="hover:text-white transition-colors">Login/Signup</a></li>
+                        <li><a href="src/logout.php" class="hover:text-red-300 transition-colors">Logout</a></li>
                     </ul>
                 </div>
                 <div>

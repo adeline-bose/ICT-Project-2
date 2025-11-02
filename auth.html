@@ -457,7 +457,7 @@
                     });
                 });
 
-            /*    // Form submissions
+                // Form submissions
                 const loginForm = document.getElementById('loginForm');
                 const signupForm = document.getElementById('signupForm');
 
@@ -465,9 +465,9 @@
                     loginForm.addEventListener('submit', (e) => this.handleLogin(e));
                 }
 
-               if (signupForm) {
+                /* if (signupForm) {
                     signupForm.addEventListener('submit', (e) => this.handleSignup(e));
-                   }             Commented out on 26/10 to validate sign up using PHP -Adeline   */
+                   }*/
             }
 
             showView(view) {
@@ -518,13 +518,52 @@
             }
 
             handleLogin(e) {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const data = Object.fromEntries(formData);
+                e.preventDefault(); // Stop the form from submitting normally
+                const form = e.target;
+                const formData = new FormData(form);
 
-                // TODO: Implement actual login with backend API
-                // Session-based redirect will be handled by backend
-                console.log('Login data:', data);
+                // Get your error message DIVs (which you already have in your HTML)
+                const errorDiv = document.getElementById('loginErrorMessage');
+                const errorText = document.getElementById('loginErrorText');
+                
+                // Hide any old error messages
+                if (errorDiv) errorDiv.classList.add('hidden');
+
+                // Send the data to the URL in the form's "action" attribute
+                fetch(form.action, {
+                    method: form.method,
+                    body: formData
+                })
+                .then(response => response.json()) // Expect JSON back
+                .then(data => {
+                    // 'data' is the JSON from login.php
+                    if (data.status === 'success') {
+                        // --- SUCCESS ---
+                        // This is where the redirect happens!
+                        if (data.role === 'admin') {
+                            window.location.href = 'src/dashboard-admin.php';
+                        } else if (data.role === 'seller') {
+                            window.location.href = 'src/dashboard-seller.php';
+                        } else {
+                            window.location.href = 'src/dashboard-buyer.php';
+                        }
+                    } else {
+                        // --- ERROR ---
+                        // Show the error message from PHP
+                        if (errorDiv && errorText) {
+                            errorText.textContent = data.message;
+                            errorDiv.classList.remove('hidden');
+                        }
+                    }
+                })
+                .catch(error => {
+                    // Handle network errors (or if JSON is broken)
+                    console.error('Error:', error);
+                    if (errorDiv && errorText) {
+                        errorText.textContent = 'Could not connect to server. Please try again.';
+                        errorDiv.classList.remove('hidden');
+                    }
+                });
             }
 
             handleSignup(e) {

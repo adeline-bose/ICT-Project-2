@@ -1,52 +1,47 @@
 <?php
-include('session.php');
+include('session.php'); // This should just contain session_start()
 include('db.php');
 
+// 1. Improved Security Check (matches other pages)
+if (!isset($_SESSION['user_id'])) { 
+    // Not logged in.
+    header("Location: /ICT-Project-2/auth.html?view=login&error=login_required");
+    exit();
+}
 if ($_SESSION['role'] !== 'admin') {
-    header("Location: auth.html");
+    // Logged in, but wrong role.
+    header("Location: /ICT-Project-2/auth.html?view=login&error=unauthorized");
     exit();
 }
 
+// 2. Get all requests (Your query is perfect)
 $sql = "SELECT r.*, u.fname FROM scrap_requests r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC";
 $result = $conn->query($sql);
+
+// Helper array for status badges (Tailwind classes)
+$status_colors = [
+    'pending' => 'bg-amber-500/20 text-amber-300',
+    'accepted' => 'bg-blue-500/20 text-blue-300',
+    'picked_up' => 'bg-purple-500/20 text-purple-300',
+    'completed' => 'bg-emerald-500/20 text-emerald-300',
+    'cancelled' => 'bg-red-500/20 text-red-300' // Added a new one just in case
+];
+
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="/ICT-Project-2/">
-    <title>Login/Signup - ScrapSmart</title>
+    <title>Admin Dashboard - ScrapSmart</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
-    <style>
-        /* Hide all auth views by default */
-        .auth-view {
-            display: none;
-        }
-        
-        /* Only show the active view */
-        .auth-view.active-view {
-            display: block;
-        }
-        
-        /* Smooth transitions */
-        .auth-view {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
+    </head>
 <body class="min-h-screen gradient-bg">
-    <!-- Navigation Header -->
     <header class="header">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
@@ -58,77 +53,114 @@ $result = $conn->query($sql);
                     <a href="index.html" class="nav-link">Home</a>
                     <a href="listings.html" class="nav-link">Buy Scrap</a>
                     <a href="seller.html" class="nav-link">Sell Scrap</a>
-                    <a href="auth.html" class="nav-link active">Login/Signup</a>
+                    <a href="src/logout.php" class="nav-link text-red-400 hover:text-red-300">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
                 </nav>
                 <button class="md:hidden text-slate-300" id="mobileMenuBtn">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
-            <!-- Mobile Menu -->
             <div id="mobileMenu" class="md:hidden mt-4 hidden">
                 <div class="flex flex-col space-y-2">
                     <a href="index.html" class="nav-link mobile-nav">Home</a>
                     <a href="listings.html" class="nav-link mobile-nav">Buy Scrap</a>
                     <a href="seller.html" class="nav-link mobile-nav">Sell Scrap</a>
-                    <a href="auth.html" class="nav-link mobile-nav active">Login/Signup</a>
+                    <a href="src/logout.php" class="nav-link mobile-nav text-red-400">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
                 </div>
             </div>
         </div>
     </header>
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="mb-0">Admin Dashboard</h2>
-      <a href="src/logout.php" class="btn btn-danger btn-sm">Logout</a>
-    </div>
+    <main>
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex items-center justify-between mb-8">
+                <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+                <span class="text-slate-400">Manage all user requests</span>
+            </div>
 
-  <div class="container mt-5">
-    <h2 class="mb-4">All Scrap Requests</h2>
-    <table class="table table-dark table-bordered">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Scrap Type</th>
-          <th>Address</th>
-          <th>Pickup Time</th>
-          <th>Price</th>
-          <th>Weight (kg)</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-          <td><?= htmlspecialchars($row['fname']) ?></td>
-          <td><?= htmlspecialchars($row['scrap_type']) ?></td>
-          <td><?= htmlspecialchars($row['address']) ?></td>
-          <td><?= htmlspecialchars($row['pickup_time']) ?></td>
-          <td><?= htmlspecialchars($row['unit_price']) ?></td>
-          <td><?= htmlspecialchars($row['weight_kg']) ?></td>
-          <td><?= htmlspecialchars($row['status']) ?></td>
-          <td>
-            <form method="POST" action="update_status.php" class="d-flex gap-2">
-              <input type="hidden" name="id" value="<?= (int)$row['id'] ?>">
-              <select name="status" class="form-select form-select-sm bg-dark text-white" required>
-                <option value="pending"   <?= $row['status']==='pending'   ? 'selected' : '' ?>>Pending</option>
-                <option value="accepted"  <?= $row['status']==='accepted'  ? 'selected' : '' ?>>Accepted</option>
-                <option value="picked_up" <?= $row['status']==='picked_up' ? 'selected' : '' ?>>Picked Up</option>
-                <option value="completed" <?= $row['status']==='completed' ? 'selected' : '' ?>>Completed</option>
-              </select>
-              <button class="btn btn-success btn-sm">Update</button>
-            </form>       
-            <form method="POST" action="delete_request.php" style="display:inline-block;">
-              <input type="hidden" name="id" value="<?= $row['id'] ?>">
-              <button class="btn btn-danger btn-sm mt-1" onclick="return confirm('Delete this request?')">Delete</button>
-            </form>
-          </td>
-        </tr>
-        <?php endwhile; ?>
-      </tbody>
-    </table>
-  </div>
+            <h2 class="text-2xl font-bold mb-6">All Scrap Requests</h2>
 
-      <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
+            <div class="card p-0 md:p-0">
+                <div class="space-y-4 md:space-y-0">
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <div class="p-4 md:p-6 flex flex-col md:flex-row items-start border-b border-slate-700/50 last:border-b-0">
+                                
+                                <div class="flex-1">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h3 class="text-lg font-semibold text-emerald-400">
+                                            <?php echo htmlspecialchars($row['scrap_type']); ?>
+                                        </h3>
+                                        <?php
+                                            $status = htmlspecialchars($row['status']);
+                                            $color_class = $status_colors[$status] ?? 'bg-slate-700 text-slate-300';
+                                        ?>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full <?php echo $color_class; ?>">
+                                            <?php echo ucwords(str_replace('_', ' ', $status)); ?>
+                                        </span>
+                                    </div>
+
+                                    <div class="text-sm text-slate-400 mb-4">
+                                        <i class="fas fa-user mr-2 w-4 text-center"></i>
+                                        Requested by <strong><?php echo htmlspecialchars($row['fname']); ?></strong>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm">
+                                        <div>
+                                            <span class="text-slate-500">Weight:</span>
+                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['weight_kg']); ?> kg</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-slate-500">Price:</span>
+                                            <strong class="text-slate-200">$<?php echo htmlspecialchars($row['unit_price']); ?> /kg</strong>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <span class="text-slate-500">Pickup:</span>
+                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['pickup_time']); ?></strong>
+                                        </div>
+                                        <div class="col-span-2 md:col-span-4">
+                                            <span class="text-slate-500">Address:</span>
+                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['address']); ?></strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-64 md:ml-6 mt-6 md:mt-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-slate-700/50 md:pl-6">
+                                    <form method="POST" action="src/update_status.php" class="flex flex-col space-y-3">
+                                        <input type="hidden" name="id" value="<?php echo (int)$row['id']; ?>">
+                                        <select name="status" class="form-input" required>
+                                            <option value="pending"   <?php echo $row['status']==='pending'   ? 'selected' : ''; ?>>Pending</option>
+                                            <option value="accepted"  <?php echo $row['status']==='accepted'  ? 'selected' : ''; ?>>Accepted</option>
+                                            <option value="picked_up" <?php echo $row['status']==='picked_up' ? 'selected' : ''; ?>>Picked Up</option>
+                                            <option value="completed" <?php echo $row['status']==='completed' ? 'selected' : ''; ?>>Completed</option>
+                                        </select>
+                                        <button type="submit" class="btn-primary w-full">Update Status</button>
+                                    </form>
+                                    
+                                    <form method="POST" action="src/delete_request.php" class="mt-3">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" class="w-full btn-secondary text-red-400 hover:bg-red-500/10 hover:text-red-300" onclick="return confirm('Are you sure you want to delete this request?')">
+                                            <i class="fas fa-trash-alt mr-2"></i>Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="p-6 text-center text-slate-400">
+                            <i class="fas fa-box-open text-4xl mb-4"></i>
+                            <p>No scrap requests found.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -146,7 +178,7 @@ $result = $conn->query($sql);
                         <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
                         <li><a href="listings.html" class="hover:text-white transition-colors">Buy Scrap</a></li>
                         <li><a href="seller.html" class="hover:text-white transition-colors">Sell Scrap</a></li>
-                        <li><a href="auth.html" class="hover:text-white transition-colors">Login/Signup</a></li>
+                        <li><a href="src/logout.php" class="hover:text-red-300 transition-colors">Logout</a></li>
                     </ul>
                 </div>
                 <div>
@@ -182,5 +214,6 @@ $result = $conn->query($sql);
         </div>
     </footer>
 
+    <script src="js/main.js"></script>
 </body>
 </html>
