@@ -15,7 +15,7 @@ if ($_SESSION['role'] !== 'admin') {
 }
 
 // 2. Get all requests (Your query is perfect)
-$sql = "SELECT r.*, u.fname FROM scrap_requests r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC";
+$sql = "SELECT r.*, u.bname FROM scrap_requests r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC";
 $result = $conn->query($sql);
 
 // Helper array for status badges (Tailwind classes)
@@ -89,37 +89,37 @@ $status_colors = [
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <div class="p-4 md:p-6 flex flex-col md:flex-row items-start border-b border-slate-700/50 last:border-b-0">
                                 
-                                <div class="flex-1">
-                                    <div class="flex items-center justify-between mb-3">
-                                        <h3 class="text-lg font-semibold text-emerald-400">
-                                            <?php echo htmlspecialchars($row['scrap_type']); ?>
-                                        </h3>
-                                        <?php
-                                            $status = htmlspecialchars($row['status']);
-                                            $color_class = $status_colors[$status] ?? 'bg-slate-700 text-slate-300';
-                                        ?>
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full <?php echo $color_class; ?>">
-                                            <?php echo ucwords(str_replace('_', ' ', $status)); ?>
-                                        </span>
-                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-start justify-between mb-2">
+                                            <h3 class="text-lg font-semibold text-emerald-400">
+                                                <?php echo htmlspecialchars($row['scrap_name']); ?>
+                                            </h3>
+                                            <?php
+                                                $status = htmlspecialchars($row['status']);
+                                                $color_class = $status_colors[$status] ?? 'bg-slate-700 text-slate-300';
+                                            ?>
+                                            <span class="px-2 py-1 text-xs font-medium rounded-full <?php echo $color_class; ?> flex-shrink-0">
+                                                <?php echo ucwords(str_replace('_', ' ', $status)); ?>
+                                            </span>
+                                        </div>
+
+                                        <p class="text-sm text-slate-400 mb-4">
+                                            <?php echo htmlspecialchars(ucfirst($row['scrap_type'])); ?> • <?php echo htmlspecialchars($row['weight_kg']); ?>kg
+                                        </p>
 
                                     <div class="text-sm text-slate-400 mb-4">
                                         <i class="fas fa-user mr-2 w-4 text-center"></i>
-                                        Requested by <strong><?php echo htmlspecialchars($row['fname']); ?></strong>
+                                        Requested by <strong><?php echo htmlspecialchars($row['bname']); ?></strong>
                                     </div>
                                     
                                     <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-sm">
-                                        <div>
-                                            <span class="text-slate-500">Weight:</span>
-                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['weight_kg']); ?> kg</strong>
-                                        </div>
                                         <div>
                                             <span class="text-slate-500">Price:</span>
                                             <strong class="text-slate-200">$<?php echo htmlspecialchars($row['unit_price']); ?> /kg</strong>
                                         </div>
                                         <div class="col-span-2">
-                                            <span class="text-slate-500">Pickup:</span>
-                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['pickup_time']); ?></strong>
+                                            <span class="text-slate-500">Date Created:</span>
+                                            <strong class="text-slate-200"><?php echo htmlspecialchars($row['created_at']); ?></strong>
                                         </div>
                                         <div class="col-span-2 md:col-span-4">
                                             <span class="text-slate-500">Address:</span>
