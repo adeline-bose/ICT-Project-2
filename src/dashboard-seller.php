@@ -194,9 +194,13 @@ $status_colors = [
                                       <?php endif; ?>
                                     </div>
                                     <div class="flex-1">
-                                        <div class="flex justify-between">
-                                            <h3 class="font-medium"><?php echo htmlspecialchars($listing['scrap_name']); ?></h3>
-                                            <span class="px-2 py-1 text-xs rounded-full <?php echo $color_class; ?>">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex items-baseline">
+                                                <h3 class="font-medium"><?php echo htmlspecialchars($listing['scrap_name']); ?></h3>
+                                                <span class="text-xs text-slate-500 ml-2">(ID: <?php echo $listing['id']; ?>)</span>
+                                            </div>
+                                            
+                                            <span class="px-2 py-1 text-xs rounded-full <?php echo $color_class; ?> flex-shrink-0">
                                                 <?php echo ucwords(str_replace('_', ' ', $status)); ?>
                                             </span>
                                         </div>

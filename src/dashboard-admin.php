@@ -91,9 +91,14 @@ $status_colors = [
                                 
                                     <div class="flex-1">
                                         <div class="flex items-start justify-between mb-2">
-                                            <h3 class="text-lg font-semibold text-emerald-400">
-                                                <?php echo htmlspecialchars($row['scrap_name']); ?>
-                                            </h3>
+    
+                                            <div class="flex items-baseline"> 
+                                                <h3 class="text-lg font-semibold text-emerald-400">
+                                                    <?php echo htmlspecialchars($row['scrap_name']); ?>
+                                                </h3>
+                                                <span class="text-xs text-slate-500 ml-2">(ID: <?php echo $row['id']; ?>)</span>
+                                            </div>
+
                                             <?php
                                                 $status = htmlspecialchars($row['status']);
                                                 $color_class = $status_colors[$status] ?? 'bg-slate-700 text-slate-300';
