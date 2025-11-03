@@ -1,26 +1,15 @@
-/*
-* This script now has two jobs:
-* 1. Handle the "List Item" form submission using fetch().
-* 2. Update the "Choose file" label text.
-* 3. (Future) Handle the delete/edit buttons.
-*
-* All fake data and rendering functions have been removed
-* because the PHP file now handles displaying the listings.
-*/
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Find the form and add the submit listener
     const listingForm = document.getElementById('listingForm');
     if (listingForm) {
         listingForm.addEventListener('submit', handleListingSubmit);
     }
 
-    // 2. Find the file input and add the change listener
     const itemImageInput = document.getElementById('itemImage');
     const fileLabel = document.getElementById('fileLabel');
     
     if (itemImageInput && fileLabel) {
-        itemImageInput.addEventListener('change', ()_ => {
+        itemImageInput.addEventListener('change', () => {
             if (itemImageInput.files.length > 0) {
                 fileLabel.textContent = itemImageInput.files[0].name;
             } else {
@@ -29,10 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Add listeners for delete/edit buttons
-    // We listen on the whole document in case listings are added/removed
     document.addEventListener('click', (e) => {
-        // Find the closest delete button to where the user clicked
         const deleteButton = e.target.closest('.delete-listing');
         if (deleteButton) {
             e.preventDefault();
@@ -40,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             handleDeleteListing(listingId);
         }
 
-        // Find the closest edit button
         const editButton = e.target.closest('.edit-listing');
         if (editButton) {
             e.preventDefault();
@@ -50,10 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/**
- * Handles the submission of the new listing form
- * This is the same function from before, it is correct.
- */
+
 function handleListingSubmit(e) {
     e.preventDefault(); // Stop the form from reloading the page
     const formData = new FormData(e.target);
@@ -64,19 +46,21 @@ function handleListingSubmit(e) {
         submitButton.disabled = true; 
     }
 
-    fetch('submit_post.php', { // Assumes submit_post.php is in the root
+    // This path is correct because of your <base href> tag
+    fetch('src/submit_post.php', { 
         method: 'POST',
         body: formData 
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            alert('Listing posted successfully!');
-            location.reload(); // Reload the page to show the new listing
+            location.reload(true); // Hard reload the page
         } else {
             alert('Error: ' + data.message);
             if (submitButton) {
-                submitButton.textContent = 'List Item';
+                // Reset button text based on if it was an update or new post
+                const idInput = document.getElementById('listingIdField');
+                submitButton.textContent = idInput ? 'Update Item' : 'List Item';
                 submitButton.disabled = false;
             }
         }
@@ -85,7 +69,8 @@ function handleListingSubmit(e) {
         console.error('Submission error:', error);
         alert('An error occurred. Could not connect to the server.');
         if (submitButton) {
-            submitButton.textContent = 'List Item';
+            const idInput = document.getElementById('listingIdField');
+            submitButton.textContent = idInput ? 'Update Item' : 'List Item';
             submitButton.disabled = false;
         }
     });
@@ -95,26 +80,27 @@ function handleListingSubmit(e) {
  * Handles deleting a listing
  */
 function handleDeleteListing(listingId) {
-    if (confirm('Are you sure you want to delete this listing?')) {
-        // TODO: Create a 'delete_listing.php' file to handle this
-        alert(`Pressed delete for listing ID ${listingId}. \nWe need to create delete_listing.php next!`);
+    if (confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
         
-        /* // This is what the code will look like:
-        fetch('delete_listing.php', {
+        // --- THIS IS THE NEW, WORKING DELETE CODE ---
+        fetch('src/delete_listing.php', { // We need to create this file
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id=${listingId}`
+            body: `id=${listingId}` // Send the ID as POST data
         })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                alert('Listing deleted!');
-                location.reload();
+                alert('Listing deleted successfully!');
+                location.reload(true); // Hard reload the page
             } else {
                 alert('Error: ' + data.message);
             }
+        })
+        .catch(error => {
+            console.error('Delete error:', error);
+            alert('An error occurred. Could not connect to the server.');
         });
-        */
     }
 }
 
@@ -122,6 +108,47 @@ function handleDeleteListing(listingId) {
  * Handles editing a listing
  */
 function handleEditListing(listingId) {
-    // TODO: Build the edit functionality
-    alert(`Pressed edit for listing ID ${listingId}. \nThis would open an edit form.`);
+    fetch(`src/get_listing.php?id=${listingId}`)
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === 'success') {
+                const data = result.data;
+                
+                // Fill in the form with the data
+                document.getElementById('itemTitle').value = data.scrap_name;
+                document.getElementById('scrapType').value = data.scrap_type;
+                document.getElementById('itemWeight').value = data.weight_kg;
+                document.getElementById('itemDescription').value = data.descr;
+                document.querySelector('input[name="price"]').value = data.unit_price;
+                document.querySelector('input[name="location"]').value = data.address;
+                
+                // Change the form button to "Update"
+                const submitButton = document.querySelector('#listingForm button[type="submit"]');
+                submitButton.textContent = 'Update Item';
+
+                // --- SYNTAX ERROR 1: This line was not a comment ---
+                // Add a hidden input to store the ID
+                
+                // First, check if one already exists
+                let idInput = document.getElementById('listingIdField');
+                if (!idInput) {
+                    // Create it if it doesn't
+                    idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.id = 'listingIdField';
+                    idInput.name = 'id'; // This is what submit_post.php looks for
+                    document.getElementById('listingForm').appendChild(idInput);
+                }
+                idInput.value = data.id; // Set the ID
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } else {
+                alert('Error: ' + result.message);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('Could not fetch listing details.');
+        });
 }

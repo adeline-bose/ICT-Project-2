@@ -1,5 +1,6 @@
 <?php
 include('session.php');
+include('db.php');
 
 if (!isset($_SESSION['user_id'])) { 
     // Not logged in. Redirect.

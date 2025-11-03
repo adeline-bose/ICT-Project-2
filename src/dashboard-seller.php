@@ -1,6 +1,6 @@
 <?php
-include('session.php'); // This starts the session
-include('db.php');     // Connect to the database
+include('session.php'); 
+include('db.php');   
 
 
 if (!isset($_SESSION['user_id'])) { 
@@ -16,7 +16,7 @@ if ($_SESSION['role'] !== 'seller') {
 $user_id = $_SESSION['user_id'];
 $listings = [];
 $active_count = 0;
-$sold_count = 0; // We'll count 'completed' as 'sold'
+$sold_count = 0; 
 
 
 $sql = "SELECT * FROM scrap_requests WHERE user_id = ? ORDER BY created_at DESC";
@@ -25,7 +25,6 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Loop through the real data and count statuses
 while ($row = $result->fetch_assoc()) {
     $listings[] = $row;
     if ($row['status'] === 'completed') {
@@ -35,7 +34,7 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 $stmt->close();
-$conn->close(); // Close DB connection
+$conn->close(); 
 
 
 $status_colors = [
@@ -112,7 +111,7 @@ $status_colors = [
                         </div>
                     </div>
                     
-                    <form id="listingForm" class="space-y-6" action="submit_post.php" method="POST" enctype="multipart/form-data">
+                    <form id="listingForm" class="space-y-6" action="src/submit_post.php" method="POST" enctype="multipart/form-data">
                         <div>
                             <label class="block text-sm font-medium text-slate-300 mb-1">Item Title</label>
                             <input type="text" id="itemTitle" name="title" class="form-input" placeholder="e.g. Copper Wiring, Aluminum Sheets" required />
