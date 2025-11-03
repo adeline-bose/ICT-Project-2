@@ -9,6 +9,7 @@ $response = [
     'message' => 'An unknown error occurred.'
 ];
 
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'seller') {
     $response['message'] = 'Unauthorized. You must be logged in as a seller.';
     echo json_encode($response);
@@ -53,12 +54,12 @@ if (isset($_POST['title'], $_POST['type'], $_POST['weight'], $_POST['price'], $_
         if ($is_update) {
             $listing_id = (int)$_POST['id'];
             
-            // Build query based on whether a new photo was uploaded
             if ($photo_path_for_db) {
+                // New photo was uploaded
                 $sql = "UPDATE scrap_requests SET 
                             scrap_name = ?, scrap_type = ?, weight_kg = ?, photo_url = ?, 
                             descr = ?, unit_price = ?, address = ?, total_price = ?
-                        WHERE id = ? AND user_id = ?"; // Security check
+                        WHERE id = ? AND user_id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssdsdsddii", 
                     $scrap_name, $scrap_type, $weight_kg, $photo_path_for_db, 
@@ -66,10 +67,11 @@ if (isset($_POST['title'], $_POST['type'], $_POST['weight'], $_POST['price'], $_
                     $listing_id, $user_id
                 );
             } else {
+                // No new photo
                 $sql = "UPDATE scrap_requests SET 
                             scrap_name = ?, scrap_type = ?, weight_kg = ?, 
                             descr = ?, unit_price = ?, address = ?, total_price = ?
-                        WHERE id = ? AND user_id = ?"; // Security check
+                        WHERE id = ? AND user_id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssdsdsdii", 
                     $scrap_name, $scrap_type, $weight_kg, 
@@ -84,6 +86,7 @@ if (isset($_POST['title'], $_POST['type'], $_POST['weight'], $_POST['price'], $_
                         (user_id, scrap_name, scrap_type, weight_kg, photo_url, descr, unit_price, address, total_price, status) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
             $stmt = $conn->prepare($sql);
+
             $stmt->bind_param("issdsdsdd", 
                 $user_id, $scrap_name, $scrap_type, $weight_kg, 
                 $photo_path_for_db, $descr, $unit_price, $address, $total_price

@@ -120,12 +120,12 @@ $status_colors = [
                             <label class="block text-sm font-medium text-slate-300 mb-1">Scrap Type</label>
                             <select id="scrapType" name="type" class="form-input" required>
                                 <option value="" class="text-slate-400">Select type</option>
-                                <option value="metal" class="text-white">Metal</option>
-                                <option value="electronics" class="text-white">Electronics</option>
-                                <option value="batteries" class="text-white">Batteries</option>
-                                <option value="wires" class="text-white">Wires</option>
-                                <option value="automotive" class="text-white">Automotive</option>
-                                <option value="other" class="text-white">Other</option>
+                                <option value="Metal" class="text-white">Metal</option>
+                                <option value="Electronics" class="text-white">Electronics</option>
+                                <option value="Batteries" class="text-white">Batteries</option>
+                                <option value="Wires" class="text-white">Wires</option>
+                                <option value="Automotive" class="text-white">Automotive</option>
+                                <option value="Other" class="text-white">Other</option>
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">

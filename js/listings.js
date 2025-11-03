@@ -12,175 +12,44 @@ class ListingsPage {
     }
 
     init() {
-        this.loadListings();
+        this.loadListings(); // This function is now changed
         this.setupEventListeners();
         this.loadCategoryFromURL();
         this.renderListings();
     }
 
+    // --- THIS IS THE FIXED FUNCTION ---
     loadListings() {
-        // Sample data - in a real app, this would come from an API
-        this.listings = [
-            {
-                id: 1,
-                title: "Copper Wiring (High Purity)",
-                type: "metal",
-                weight: "25kg",
-                price: "$8.50/kg",
-                location: "Sydney, NSW",
-                image: "🔌",
-                seller: "MetalRecycler123",
-                rating: 4.8,
-                posted: "2h ago",
-                gradient: "from-orange-500 to-amber-600"
-            },
-            {
-                id: 2,
-                title: "Aluminum Cans (Bulk)",
-                type: "metal",
-                weight: "120kg",
-                price: "$1.20/kg",
-                location: "Melbourne, VIC",
-                image: "🥫",
-                seller: "EcoCollector",
-                rating: 4.5,
-                posted: "5h ago",
-                gradient: "from-blue-500 to-cyan-600"
-            },
-            {
-                id: 3,
-                title: "Used Laptops (Working)",
-                type: "electronics",
-                weight: "8 units",
-                price: "$35/unit",
-                location: "Brisbane, QLD",
-                image: "💻",
-                seller: "TechSalvage",
-                rating: 4.9,
-                posted: "1d ago",
-                gradient: "from-purple-500 to-indigo-600"
-            },
-            {
-                id: 4,
-                title: "Car Batteries",
-                type: "batteries",
-                weight: "6 units",
-                price: "$18/unit",
-                location: "Perth, WA",
-                image: "🔋",
-                seller: "AutoPartsWA",
-                rating: 4.3,
-                posted: "1d ago",
-                gradient: "from-green-500 to-emerald-600"
-            },
-            {
-                id: 5,
-                title: "Steel Scrap (Mixed)",
-                type: "metal",
-                weight: "500kg",
-                price: "$0.80/kg",
-                location: "Adelaide, SA",
-                image: "🛠️",
-                seller: "SteelMasters",
-                rating: 4.6,
-                posted: "2d ago",
-                gradient: "from-red-500 to-pink-600"
-            },
-            {
-                id: 6,
-                title: "Copper Pipes (Clean)",
-                type: "metal",
-                weight: "45kg",
-                price: "$7.20/kg",
-                location: "Newcastle, NSW",
-                image: "🚰",
-                seller: "PlumbRight",
-                rating: 4.7,
-                posted: "3d ago",
-                gradient: "from-yellow-500 to-amber-600"
-            },
-            {
-                id: 7,
-                title: "Electrical Wiring (Stripped)",
-                type: "wires",
-                weight: "30kg",
-                price: "$5.50/kg",
-                location: "Gold Coast, QLD",
-                image: "⚡",
-                seller: "WireRecyclers",
-                rating: 4.4,
-                posted: "4d ago",
-                gradient: "from-indigo-500 to-purple-600"
-            },
-            {
-                id: 8,
-                title: "Car Parts (Various)",
-                type: "automotive",
-                weight: "Mixed lot",
-                price: "$250",
-                location: "Canberra, ACT",
-                image: "🚗",
-                seller: "AutoSalvageAU",
-                rating: 4.6,
-                posted: "5d ago",
-                gradient: "from-red-500 to-orange-600"
-            },
-            {
-                id: 9,
-                title: "Lithium Batteries (Rechargeable)",
-                type: "batteries",
-                weight: "12 units",
-                price: "$22/unit",
-                location: "Sydney, NSW",
-                image: "🔋",
-                seller: "BatteryWorld",
-                rating: 4.7,
-                posted: "6d ago",
-                gradient: "from-teal-500 to-green-600"
-            },
-            {
-                id: 10,
-                title: "Circuit Boards (E-waste)",
-                type: "electronics",
-                weight: "15kg",
-                price: "$12/kg",
-                location: "Melbourne, VIC",
-                image: "💾",
-                seller: "TechRecyclers",
-                rating: 4.4,
-                posted: "1w ago",
-                gradient: "from-violet-500 to-purple-600"
-            },
-            {
-                id: 11,
-                title: "Brass Fittings",
-                type: "metal",
-                weight: "35kg",
-                price: "$6.50/kg",
-                location: "Brisbane, QLD",
-                image: "🔩",
-                seller: "MetalWorks",
-                rating: 4.5,
-                posted: "1w ago",
-                gradient: "from-yellow-600 to-orange-500"
-            },
-            {
-                id: 12,
-                title: "LED Light Strips (Bulk)",
-                type: "electronics",
-                weight: "50 units",
-                price: "$3/unit",
-                location: "Perth, WA",
-                image: "💡",
-                seller: "LightingPro",
-                rating: 4.6,
-                posted: "1w ago",
-                gradient: "from-cyan-500 to-blue-600"
-            }
-        ];
+        // Check if our PHP file gave us real data
+        if (typeof window.PHP_LISTINGS !== 'undefined' && Array.isArray(window.PHP_LISTINGS)) {
+            
+            // Map the PHP data (e.g., 'scrap_name') to the format our JS expects (e.g., 'title')
+            this.listings = window.PHP_LISTINGS.map(item => ({
+                id: item.id,
+                title: item.scrap_name,
+                type: item.scrap_type,
+                weight: `${item.weight_kg} kg`,
+                price: `$${item.unit_price}/kg`, // Format price
+                location: item.address,
+                // Check for a photo, otherwise use a fallback icon
+                image: item.photo_url 
+                    ? `<img src="${item.photo_url}" alt="${item.scrap_name}" class="w-full h-full object-cover">` 
+                    : '📦', // Use image tag for real photos
+                seller: item.bname,
+                rating: 4.5, // Your DB doesn't have ratings yet, so we'll fake this
+                posted: new Date(item.created_at).toLocaleDateString(), // Format the date
+                gradient: "from-blue-500 to-cyan-600" // Can be randomized later
+            }));
+            
+        } else {
+            // Fallback in case something breaks
+            console.warn("PHP_LISTINGS data not found. Loading empty list.");
+            this.listings = [];
+        }
 
         this.filteredListings = [...this.listings];
     }
+    // --- END OF FIXED FUNCTION ---
 
     setupEventListeners() {
         // Search input
@@ -196,6 +65,17 @@ class ListingsPage {
         if (searchBtn) {
             searchBtn.addEventListener('click', () => {
                 this.applyFilters();
+            });
+        }
+        
+        // Filter buttons (using delegation)
+        const filterBar = document.querySelector('.flex.overflow-x-auto');
+        if (filterBar) {
+            filterBar.addEventListener('click', (e) => {
+                const filterBtn = e.target.closest('.filter-btn');
+                if (filterBtn) {
+                    this.setActiveFilter(filterBtn.getAttribute('data-filter'));
+                }
             });
         }
 
@@ -218,29 +98,19 @@ class ListingsPage {
     }
 
     loadCategoryFromURL() {
-        // Get the category from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const category = urlParams.get('category');
-
-        // If category exists in URL, set it as active filter
         if (category) {
             this.activeFilter = category.toLowerCase();
-            console.log('Category from URL:', this.activeFilter);
         } else {
             this.activeFilter = 'all';
-            console.log('No category in URL, showing all');
         }
 
         // Update UI to reflect active filter
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        console.log('Found', filterButtons.length, 'filter buttons');
-
-        filterButtons.forEach(btn => {
-            const btnFilter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active-filter');
-            if (btnFilter === this.activeFilter) {
+            if (btn.getAttribute('data-filter') === this.activeFilter) {
                 btn.classList.add('active-filter');
-                console.log('Set active filter on button:', btnFilter);
             }
         });
 
@@ -264,15 +134,13 @@ class ListingsPage {
 
     setSearchQuery(query) {
         this.searchQuery = query.toLowerCase();
+        // Trigger search on input change, no need for button
         this.applyFilters();
     }
 
     setCurrentPage(page) {
         const totalPages = Math.ceil(this.filteredListings.length / this.itemsPerPage);
-
-        // Validate page number
-        if (page < 1 || page > totalPages) {
-            console.warn('Invalid page number:', page);
+        if (page < 1 || (totalPages > 0 && page > totalPages)) {
             return;
         }
 
@@ -291,8 +159,6 @@ class ListingsPage {
                 behavior: 'smooth'
             });
         }
-
-        console.log('Changed to page:', page);
     }
 
     applyFilters() {
@@ -311,59 +177,59 @@ class ListingsPage {
         const container = document.getElementById('listingsContainer');
         if (!container) return;
 
-        // Calculate pagination
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
         const endIndex = startIndex + this.itemsPerPage;
         const currentListings = this.filteredListings.slice(startIndex, endIndex);
 
         if (currentListings.length === 0) {
             container.innerHTML = `
-                <div class="col-span-3 card p-8 text-center">
-                    <p class="text-slate-400">No listings match your search criteria</p>
+                <div class="col-span-1 sm:col-span-2 lg:col-span-3 card p-8 text-center">
+                    <i class="fas fa-box-open text-4xl mb-4 text-slate-500"></i>
+                    <h3 class="text-xl font-semibold mb-2">No Listings Found</h3>
+                    <p class="text-slate-400">No listings match your search criteria. Try removing some filters.</p>
                 </div>
             `;
+            this.renderPagination(); // Render empty pagination
             return;
         }
 
+        // --- UPDATED RENDER FUNCTION ---
+        // This now matches the new card style from your buyer dashboard
         container.innerHTML = currentListings.map(item => `
-            <div class="listing-card">
-                <div class="listing-gradient-bar bg-gradient-to-r ${item.gradient}"></div>
-                <div class="p-5">
-                    <div class="flex items-start">
-                        <div class="w-16 h-16 rounded-lg bg-slate-700/50 flex items-center justify-center text-3xl mr-4">
-                            ${item.image}
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-lg mb-1">${item.title}</h3>
-                            <div class="flex items-center text-sm text-slate-400 mb-2">
-                                <span class="capitalize">${item.type}</span>
-                                <span class="mx-2">•</span>
-                                <span>${item.weight}</span>
-                            </div>
-                            <div class="star-rating">
-                                ${this.renderStars(item.rating)}
-                                <span class="text-sm text-slate-400 ml-2">${item.rating}</span>
-                            </div>
-                        </div>
+            <div class="card flex flex-col overflow-hidden">
+                <div class="h-48 w-full bg-slate-700 flex items-center justify-center text-3xl">
+                    ${item.image} </div>
+                
+                <div class="p-4 flex flex-col flex-1">
+                    <h3 class="text-xl font-semibold mb-2">${item.title}</h3>
+                    
+                    <p class="text-sm text-slate-400 mb-2">
+                        Sold by: <strong class="text-slate-300">@${item.seller}</strong>
+                    </p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <span class="px-2 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-300 capitalize">
+                            ${item.type}
+                        </span>
+                        <span class="px-2 py-1 text-xs rounded-full bg-slate-700/50 text-slate-300">
+                            ${item.weight}
+                        </span>
+                    </div>
+                    
+                    <p class="text-2xl font-bold text-emerald-400 mb-4">
+                        ${item.price}
+                    </p>
+                    
+                    <div class="text-sm text-slate-400 flex items-center mb-4">
+                         <i class="fas fa-map-marker-alt mr-2"></i>
+                         <span>${item.location}</span>
                     </div>
 
-                    <div class="mt-4 flex justify-between items-center">
-                        <div>
-                            <p class="text-emerald-400 font-bold text-xl">${item.price}</p>
-                            <div class="flex items-center text-sm text-slate-400 mt-1">
-                                <i class="fas fa-map-marker-alt mr-1"></i>
-                                <span>${item.location}</span>
-                            </div>
-                        </div>
-                        <button class="view-details flex items-center text-emerald-400 hover:text-emerald-300" data-id="${item.id}">
-                            <span class="mr-1">View</span>
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="px-5 py-3 bg-slate-800/30 border-t border-slate-700/50 flex justify-between items-center">
-                    <span class="text-sm text-slate-400">@${item.seller}</span>
-                    <span class="text-xs text-slate-500">${item.posted}</span>
+                    <div class="flex-1"></div> 
+                    
+                    <button class="view-details w-full btn-primary text-center" data-id="${item.id}">
+                        View Details
+                    </button>
                 </div>
             </div>
         `).join('');
@@ -372,28 +238,27 @@ class ListingsPage {
     }
 
     renderStars(rating) {
+        // This function is no longer used in the new card, but we can leave it
         let stars = '';
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 !== 0;
-        
         for (let i = 0; i < fullStars; i++) {
             stars += '<i class="fas fa-star filled"></i>';
         }
-        
         if (hasHalfStar) {
             stars += '<i class="fas fa-star-half-alt half-filled"></i>';
         }
-        
         const emptyStars = 5 - Math.ceil(rating);
         for (let i = 0; i < emptyStars; i++) {
             stars += '<i class="far fa-star star"></i>';
         }
-        
         return stars;
     }
 
     renderPagination() {
         const totalPages = Math.ceil(this.filteredListings.length / this.itemsPerPage);
+        // --- PAGINATION FIX ---
+        // Find the div you originally had
         const paginationContainer = document.getElementById('pagination');
 
         if (!paginationContainer) {
@@ -401,7 +266,6 @@ class ListingsPage {
             return;
         }
 
-        // hide pagination if only one page or no results
         if (totalPages <= 1) {
             paginationContainer.innerHTML = '';
             paginationContainer.parentElement.style.display = 'none';
@@ -441,27 +305,19 @@ class ListingsPage {
         `;
 
         paginationContainer.innerHTML = paginationHTML;
-        console.log('Pagination rendered:', totalPages, 'pages, current page:', this.currentPage);
     }
 
     viewListingDetails(listingId) {
-        // store the listing ID for the details page
-        sessionStorage.setItem('currentListingId', listingId);
-        window.scrapSmartApp.showPage('details');
+        // Go to the new details page, passing the ID in the URL
+        window.location.href = `src/details.php?id=${listingId}`;
     }
 }
 
 // Initialize listings page when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // only initialize if we're on the listings page
     if (document.getElementById('listingsContainer')) {
         new ListingsPage();
     }
 });
 
-// Initialize listings page when it becomes active (for SPA navigation)
-window.addEventListener('pageChanged', (event) => {
-    if (event.detail.page === 'listings') {
-        new ListingsPage();
-    }
-});
+// Remove the 'pageChanged' event listener, as it's not needed
