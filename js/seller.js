@@ -80,7 +80,7 @@ function handleDeleteListing(listingId) {
 }
 
 function handleEditListing(listingId) {
-    // 1. Fetch the listing data from our new PHP script
+    // Fetch the listing data from our new PHP script
     fetch(`src/get_listing.php?id=${listingId}`)
         .then(response => response.json())
         .then(result => {
@@ -123,5 +123,3 @@ function handleEditListing(listingId) {
             alert('Could not fetch listing details.');
         });
 }
-
-// --- ERROR 3: Removed the extra '}' that was here, which was crashing the file ---
