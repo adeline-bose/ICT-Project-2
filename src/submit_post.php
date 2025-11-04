@@ -61,7 +61,7 @@ if (isset($_POST['title'], $_POST['type'], $_POST['weight'], $_POST['price'], $_
                             descr = ?, unit_price = ?, address = ?, total_price = ?
                         WHERE id = ? AND user_id = ?"; // Security check
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssdsdsddii", 
+                $stmt->bind_param("ssdssssdii", 
                     $scrap_name, $scrap_type, $weight_kg, $photo_path_for_db, 
                     $descr, $unit_price, $address, $total_price, 
                     $listing_id, $user_id
@@ -85,7 +85,7 @@ if (isset($_POST['title'], $_POST['type'], $_POST['weight'], $_POST['price'], $_
                         (user_id, scrap_name, scrap_type, weight_kg, photo_url, descr, unit_price, address, total_price, status) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("issdsdsdd", 
+            $stmt->bind_param("issdssssd", 
                 $user_id, $scrap_name, $scrap_type, $weight_kg, 
                 $photo_path_for_db, $descr, $unit_price, $address, $total_price
             );

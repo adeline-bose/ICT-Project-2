@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-
     const listingForm = document.getElementById('listingForm');
     if (listingForm) {
         listingForm.addEventListener('submit', handleListingSubmit);
@@ -47,6 +46,7 @@ function handleListingSubmit(e) {
         submitButton.disabled = true; 
     }
 
+    // This path is correct
     fetch('src/submit_post.php', { 
         method: 'POST',
         body: formData 
@@ -58,7 +58,9 @@ function handleListingSubmit(e) {
         } else {
             alert('Error: ' + data.message);
             if (submitButton) {
-                submitButton.textContent = 'List Item';
+                // Reset button text
+                const idInput = document.getElementById('listingIdField');
+                submitButton.textContent = idInput ? 'Update Item' : 'List Item';
                 submitButton.disabled = false;
             }
         }
@@ -67,18 +69,43 @@ function handleListingSubmit(e) {
         console.error('Submission error:', error);
         alert('An error occurred. Could not connect to the server.');
         if (submitButton) {
-            submitButton.textContent = 'List Item';
+            const idInput = document.getElementById('listingIdField');
+            submitButton.textContent = idInput ? 'Update Item' : 'List Item';
             submitButton.disabled = false;
         }
     });
 }
 
+/**
+ * --- THIS IS THE NEW, WORKING DELETE FUNCTION ---
+ */
 function handleDeleteListing(listingId) {
-    if (confirm('Are you sure you want to delete this listing?')) {
-        alert(`Pressed delete for listing ID ${listingId}. \nWe need to create delete_listing.php next!`);
+    if (confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
+        
+        fetch('src/delete_listing.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `id=${listingId}` // Send the ID as POST data
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Listing deleted successfully!');
+                location.reload(true); // Hard reload the page
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Delete error:', error);
+            alert('An error occurred. Could not connect to the server.');
+        });
     }
 }
 
+/**
+ * --- THIS FUNCTION IS NOW FIXED ---
+ */
 function handleEditListing(listingId) {
     // Fetch the listing data from our new PHP script
     fetch(`src/get_listing.php?id=${listingId}`)
@@ -99,7 +126,9 @@ function handleEditListing(listingId) {
                 const submitButton = document.querySelector('#listingForm button[type="submit"]');
                 submitButton.textContent = 'Update Item';
 
-                Add a hidden input to store the ID
+                // --- SYNTAX ERROR FIX: This is now a comment ---
+                // Add a hidden input to store the ID
+                
                 // First, check if one already exists
                 let idInput = document.getElementById('listingIdField');
                 if (!idInput) {
