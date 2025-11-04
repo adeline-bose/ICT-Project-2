@@ -67,8 +67,9 @@ class ListingsPage {
                 this.applyFilters();
             });
         }
-        
-        // Filter buttons (using delegation)
+
+        // --- THIS IS THE NEW, MISSING CODE ---
+        // We'll use event delegation on the bar that holds the buttons
         const filterBar = document.querySelector('.flex.overflow-x-auto');
         if (filterBar) {
             filterBar.addEventListener('click', (e) => {
@@ -78,6 +79,7 @@ class ListingsPage {
                 }
             });
         }
+        // --- END OF NEW CODE ---
 
         // Pagination - use event delegation since buttons are dynamically created
         document.addEventListener('click', (e) => {
@@ -163,7 +165,7 @@ class ListingsPage {
 
     applyFilters() {
         this.filteredListings = this.listings.filter(item => {
-            const matchesFilter = this.activeFilter === 'all' || item.type === this.activeFilter;
+            const matchesFilter = this.activeFilter === 'all' || item.type.toLowerCase() === this.activeFilter;
             const matchesSearch = item.title.toLowerCase().includes(this.searchQuery) || 
                                  item.seller.toLowerCase().includes(this.searchQuery);
             return matchesFilter && matchesSearch;

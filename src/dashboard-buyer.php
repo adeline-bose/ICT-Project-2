@@ -84,7 +84,53 @@ $conn->close();
             </div>
 
             <div class="mb-12">
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search by title or seller..."
+                            class="form-input pl-10"
+                        />
+                    </div>
+                    <button class="btn-primary md:w-auto" id="searchBtn">
+                        <i class="fas fa-search mr-2"></i>
+                        Search
+                    </button>
                 </div>
+
+                <div class="flex overflow-x-auto pb-2 -mx-2 scrollbar-hide">
+                    <button data-filter="all" class="filter-btn active-filter">
+                        <i class="fas fa-filter mr-2"></i>
+                        All Types
+                    </button>
+                    <button data-filter="metal" class="filter-btn">
+                        <i class="fas fa-hammer mr-2"></i>
+                        Metal
+                    </button>
+                    <button data-filter="electronics" class="filter-btn">
+                        <i class="fas fa-microchip mr-2"></i>
+                        Electronics
+                    </button>
+                    <button data-filter="batteries" class="filter-btn">
+                        <i class="fas fa-battery-full mr-2"></i>
+                        Batteries
+                    </button>
+                    <button data-filter="wires" class="filter-btn">
+                        <i class="fas fa-bolt mr-2"></i>
+                        Wires
+                    </button>
+                    <button data-filter="automotive" class="filter-btn">
+                        <i class="fas fa-car mr-2"></i>
+                        Automotive
+                    </button>
+                    <button data-filter="other" class="filter-btn">
+                        <i class="fas fa-box mr-2"></i>
+                        Other
+                    </button>
+                </div>
+            </div>
 
             <div id="listingsContainer" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 </div>
