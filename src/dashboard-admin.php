@@ -165,7 +165,7 @@ $status_colors = [
         </div>
     </main>
 
-    <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
+<footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -181,18 +181,18 @@ $status_colors = [
                     <h4 class="font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-slate-400">
                         <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
-                        <li><a href="listings.html" class="hover:text-white transition-colors">Buy Scrap</a></li>
-                        <li><a href="seller.html" class="hover:text-white transition-colors">Sell Scrap</a></li>
+                        <li><a href="src/dashboard-buyer.php" class="hover:text-white transition-colors">Buy Scrap</a></li>
+                        <li><a href="src/dashboard-seller.php" class="hover:text-white transition-colors">Sell Scrap</a></li>
                         <li><a href="src/logout.php" class="hover:text-red-300 transition-colors">Logout</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">Categories</h4>
                     <ul class="space-y-2 text-slate-400">
-                        <li><a href="listings.html?category=metal" class="hover:text-white transition-colors">Metals</a></li>
-                        <li><a href="listings.html?category=electronics" class="hover:text-white transition-colors">Electronics</a></li>
-                        <li><a href="listings.html?category=batteries" class="hover:text-white transition-colors">Batteries</a></li>
-                        <li><a href="listings.html?category=automotive" class="hover:text-white transition-colors">Automotive</a></li>
+                        <li><a href="src/dashboard-buyer.php?category=metal" class="hover:text-white transition-colors">Metals</a></li>
+                        <li><a href="src/dashboard-buyer.php?category=electronics" class="hover:text-white transition-colors">Electronics</a></li>
+                        <li><a href="src/dashboard-buyer.php?category=batteries" class="hover:text-white transition-colors">Batteries</a></li>
+                        <li><a href="src/dashboard-buyer.php?category=automotive" class="hover:text-white transition-colors">Automotive</a></li>
                     </ul>
                 </div>
                 <div>
@@ -204,11 +204,11 @@ $status_colors = [
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-phone mr-2"></i>
-                            +1 (555) 123-4567
+                            +975 17518738
                         </li>
                         <li class="flex items-center">
                             <i class="fas fa-map-marker-alt mr-2"></i>
-                            Mumbai, India
+                            Thimphu, Bhutan
                         </li>
                     </ul>
                 </div>
