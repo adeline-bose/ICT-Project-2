@@ -73,4 +73,5 @@ Here is a brief overview of the key files:
 * `css/`: Contains stylesheets.
 * `js/`: Contains JavaScript files.
 * `src/`: Contains Backend PHP files.
+* `uploads/`: Contains uploaded photos.
 ```
