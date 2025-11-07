@@ -190,7 +190,7 @@ $status_colors = [
                                                alt="Scrap Image" 
                                                class="w-full h-full object-cover rounded-lg">
                                       <?php else: ?>
-                                          <span>📦</span> 
+                                          <span><img src="uploads/logo.png"></span> 
                                       <?php endif; ?>
                                     </div>
                                     <div class="flex-1">

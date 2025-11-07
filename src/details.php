@@ -96,7 +96,7 @@ $conn->close();
                             <?php if (!empty($listing['photo_url'])): ?>
                                 <img src="<?php echo htmlspecialchars($listing['photo_url']); ?>" alt="<?php echo htmlspecialchars($listing['scrap_name']); ?>" class="w-full h-full object-cover">
                             <?php else: ?>
-                                <i class="fas fa-image text-6xl text-slate-500"></i>
+                                <img src="uploads/logo.png" class="w-full h-full object-cover">
                             <?php endif; ?>
                         </div>
                     </div>

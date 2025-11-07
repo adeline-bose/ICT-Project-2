@@ -34,7 +34,7 @@ class ListingsPage {
                 // Check for a photo, otherwise use a fallback icon
                 image: item.photo_url 
                     ? `<img src="${item.photo_url}" alt="${item.scrap_name}" class="w-full h-full object-cover">` 
-                    : '📦', // Use image tag for real photos
+                    : '<img src="uploads/Logo.png" alt="Default Scrap Image" class="w-full h-full object-cover rounded-lg">', 
                 seller: item.bname,
                 rating: 4.5, // Your DB doesn't have ratings yet, so we'll fake this
                 posted: new Date(item.created_at).toLocaleDateString(), // Format the date
