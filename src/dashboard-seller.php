@@ -16,7 +16,9 @@ if ($_SESSION['role'] !== 'seller') {
 $user_id = $_SESSION['user_id'];
 $listings = [];
 $active_count = 0;
-$sold_count = 0; 
+$sold_count = 0;
+$total_revenue = 0;  
+$cancelled_count = 0; 
 
 
 $sql = "SELECT * FROM scrap_requests WHERE user_id = ? ORDER BY created_at DESC";
@@ -25,16 +27,25 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
 while ($row = $result->fetch_assoc()) {
     $listings[] = $row;
+    
     if ($row['status'] === 'completed') {
         $sold_count++;
-    } else if ($row['status'] !== 'cancelled') { // e.g., pending, accepted, picked_up
+        $total_revenue += $row['total_price'];
+    } else if ($row['status'] === 'cancelled') {
+        $cancelled_count++; //
+    } else {
         $active_count++;
     }
 }
 $stmt->close();
-$conn->close(); 
+$conn->close(); // Close DB connection
+
+
+$total_finished_sales = $sold_count + $cancelled_count;
+$success_rate = ($total_finished_sales > 0) ? ($sold_count / $total_finished_sales) * 100 : 0;
 
 
 $status_colors = [
@@ -222,6 +233,38 @@ $status_colors = [
                     </div>
                 </div>
             </div>
+
+            </div> <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-6">Sales Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="card p-6 text-center">
+                        <div class="text-2xl font-bold text-emerald-400 mb-2">
+                            $<?php echo number_format($total_revenue, 2); ?>
+                        </div>
+                        <div class="text-sm text-slate-400">Total Revenue</div>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="text-2xl font-bold text-blue-400 mb-2">
+                            <?php echo $sold_count; ?>
+                        </div>
+                        <div class="text-sm text-slate-400">Total Sales</div>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="text-2xl font-bold text-green-400 mb-2">
+                            <?php echo round($success_rate); ?>%
+                        </div>
+                        <div class="text-sm text-slate-400">Success Rate</div>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <div class="text-2xl font-bold text-purple-400 mb-2">
+                            N/A
+                        </div>
+                        <div class="text-sm text-slate-400">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </main>
 
             </div>
     </main>
