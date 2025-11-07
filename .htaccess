@@ -1,1 +1,3 @@
 ErrorDocument 404 /ICT-Project-2/404page.html
+Redirect 301 "/ICT-Project-2/listings.html" "/ICT-Project-2/src/dashboard-buyer.php"
+Redirect 301 "/ICT-Project-2/seller.html" "/ICT-Project-2/src/dashboard-seller.php"

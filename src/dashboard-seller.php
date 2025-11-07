@@ -232,7 +232,8 @@ $status_colors = [
                         
                     </div>
                 </div>
-            </div> <div class="mt-12">
+            </div> 
+            <div class="mt-12">
                 <h2 class="text-2xl font-bold mb-6">Sales Analytics</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="card p-6 text-center">
