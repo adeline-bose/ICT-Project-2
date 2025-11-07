@@ -5,7 +5,7 @@ ScrapSmart is a full-stack web application designed to be a seamless, transparen
 ## 🚀 Key Features
 
 ### 1. User Authentication
-* **Triple Roles:** Separate registration flows for "Buyers" and "Sellers. "Admin" roles can be assigned only by modifying the `role` column directly from the database"
+* **Triple Roles:** Separate registration flows for "Buyers" and "Sellers. "Admin" roles can be assigned only by modifying the `role` column directly from the database
 * **Account Management:** Secure login and registration system.
 * **PHP Backend:** Forms are set up to post to a PHP backend (`src/login.php`, `src/register.php` etc).
 
@@ -21,7 +21,7 @@ ScrapSmart is a full-stack web application designed to be a seamless, transparen
     * Image gallery
     * Item specifications, description, and condition
     * Key stats (available quantity, minimum order)
-    * Seller information and rating
+    * Seller information 
 * **Purchase Workflow:** Buyers can select a quantity, see a full price breakdown, and proceed to "Purchase" or "Send Inquiry."
 
 ### 4. Database Structure
