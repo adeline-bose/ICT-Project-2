@@ -9,12 +9,12 @@ ScrapSmart is a full-stack web application designed to be a seamless, transparen
 * **Account Management:** Secure login and registration system.
 * **PHP Backend:** Forms are set up to post to a PHP backend (`src/login.php`, `src/register.php` etc).
 
-### 2. Seller Dashboard (`seller.html`)
+### 2. Seller Dashboard
 * **List New Scrap:** A detailed form for sellers to list new items (title, type, weight, photo, description, price, location).
 * **Manage Listings:** View all current listings, with options to edit or delete.
 * **Recent Activity:** A feed showing recent orders, inquiries, and reviews.
 
-### 3. Buyer Marketplace (`listings.html` & `scrap-detail.html`)
+### 3. Buyer Marketplace 
 * **Browse & Search:** A full marketplace page to browse all available scrap.
 * **Dynamic Filtering:** Filter listings by category (e.g., Metal, Electronics, Batteries, Automotive).
 * **Detailed View:** Each listing has a detailed page showing:
