@@ -232,8 +232,6 @@ $status_colors = [
                         
                     </div>
                 </div>
-            </div>
-
             </div> <div class="mt-12">
                 <h2 class="text-2xl font-bold mb-6">Sales Analytics</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -265,10 +263,6 @@ $status_colors = [
             </div>
             </div>
     </main>
-
-            </div>
-    </main>
-
     <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
