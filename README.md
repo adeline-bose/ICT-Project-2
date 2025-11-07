@@ -65,9 +65,9 @@ Here is a brief overview of the key files:
 
 * `index.html`: The main landing page for the website.
 * `auth.html`: Handles both user Login and Signup (for Buyers and Sellers).
-* `listings.html`: The main marketplace page where buyers browse all listings.
-* `scrap-detail.html`: The detailed view for a single scrap item.
-* `seller.html`: The seller-facing dashboard for managing listings and sales.
+* `listings.html`: The main marketplace page where buyers browse all listings, later moved to `src/dashboard-buyer.php` to connect with the database to backend.
+* `scrap-detail.html`: The detailed view for a single scrap item, later moved to `src/details.php` to connect with the database to backend.
+* `seller.html`: The seller-facing dashboard for managing listings and sales, later moved to `src/dashboard-seller.php` to connect with the database to backend.
 * `MySQL_DB_Setup_Query.txt`: The SQL script to set up the necessary database tables.
 * `components/`: Contains JSX components.
 * `css/`: Contains stylesheets.
