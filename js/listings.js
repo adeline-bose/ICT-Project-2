@@ -18,7 +18,7 @@ class ListingsPage {
         this.renderListings();
     }
 
-    // --- THIS IS THE FIXED FUNCTION ---
+
     loadListings() {
         // Check if our PHP file gave us real data
         if (typeof window.PHP_LISTINGS !== 'undefined' && Array.isArray(window.PHP_LISTINGS)) {
@@ -49,7 +49,6 @@ class ListingsPage {
 
         this.filteredListings = [...this.listings];
     }
-    // --- END OF FIXED FUNCTION ---
 
     setupEventListeners() {
         // Search input
@@ -68,7 +67,6 @@ class ListingsPage {
             });
         }
 
-        // --- THIS IS THE NEW, MISSING CODE ---
         // We'll use event delegation on the bar that holds the buttons
         const filterBar = document.querySelector('.flex.overflow-x-auto');
         if (filterBar) {
@@ -79,7 +77,6 @@ class ListingsPage {
                 }
             });
         }
-        // --- END OF NEW CODE ---
 
         // Pagination - use event delegation since buttons are dynamically created
         document.addEventListener('click', (e) => {
@@ -195,8 +192,6 @@ class ListingsPage {
             return;
         }
 
-        // --- UPDATED RENDER FUNCTION ---
-        // This now matches the new card style from your buyer dashboard
         container.innerHTML = currentListings.map(item => `
             <div class="card flex flex-col overflow-hidden">
                 <div class="h-48 w-full bg-slate-700 flex items-center justify-center text-3xl">
@@ -259,8 +254,6 @@ class ListingsPage {
 
     renderPagination() {
         const totalPages = Math.ceil(this.filteredListings.length / this.itemsPerPage);
-        // --- PAGINATION FIX ---
-        // Find the div you originally had
         const paginationContainer = document.getElementById('pagination');
 
         if (!paginationContainer) {
@@ -321,5 +314,3 @@ document.addEventListener('DOMContentLoaded', () => {
         new ListingsPage();
     }
 });
-
-// Remove the 'pageChanged' event listener, as it's not needed

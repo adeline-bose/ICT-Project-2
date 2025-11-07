@@ -2,19 +2,18 @@
 include('session.php');
 include('db.php');
 
-// 1. Security check: Must be logged in (any role can view, for now)
 if (!isset($_SESSION['user_id'])) { 
     header("Location: /ICT-Project-2/auth.html?view=login&error=login_required");
     exit();
 }
 
-// 2. Get the Listing ID from the URL
+//Get the Listing ID from the URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die("Error: No listing ID provided.");
 }
 $listing_id = (int)$_GET['id'];
 
-// 3. Fetch the listing AND the seller's info
+// Fetch the listing AND the seller's info
 // We only show items that are 'pending' (for sale)
 $sql = "SELECT r.scrap_name, r.scrap_type, r.weight_kg, r.unit_price, r.address, r.descr, r.photo_url, r.created_at,
                u.bname, u.phone, u.email 

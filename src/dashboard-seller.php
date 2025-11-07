@@ -41,7 +41,7 @@ while ($row = $result->fetch_assoc()) {
     }
 }
 $stmt->close();
-$conn->close(); // Close DB connection
+$conn->close(); 
 
 
 $total_finished_sales = $sold_count + $cancelled_count;

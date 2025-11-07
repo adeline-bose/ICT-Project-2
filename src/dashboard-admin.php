@@ -1,8 +1,8 @@
 <?php
-include('session.php'); // This should just contain session_start()
+include('session.php');
 include('db.php');
 
-// 1. Improved Security Check (matches other pages)
+
 if (!isset($_SESSION['user_id'])) { 
     // Not logged in.
     header("Location: /ICT-Project-2/auth.html?view=login&error=login_required");
@@ -14,7 +14,7 @@ if ($_SESSION['role'] !== 'admin') {
     exit();
 }
 
-// 2. Get all requests (Your query is perfect)
+
 $sql = "SELECT r.*, u.bname FROM scrap_requests r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC";
 $result = $conn->query($sql);
 
