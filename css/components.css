@@ -1,4 +1,7 @@
-/* Header Components */
+/* =======================
+   HEADER COMPONENTS
+   ======================= */
+/* Creates a semi-transparent, blurred sticky header that stays visible while scrolling */
 .header {
     background: rgba(15, 23, 42, 0.8);
     backdrop-filter: blur(8px);
@@ -8,32 +11,39 @@
     z-index: 10;
 }
 
-/* Filter Components */
+/* =======================
+   FILTER BUTTONS
+   ======================= */
+/* Styles category filter buttons with rounded edges and smooth hover transitions */
 .filter-btn {
     display: flex;
     align-items: center;
     padding: 0.5rem 1rem;
     margin: 0 0.5rem;
     border-radius: 9999px;
-    white-space: nowrap;
-    transition: all 0.3s ease;
     background: #1e293b;
     color: #cbd5e1;
     border: 1px solid #475569;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+/* Slightly lightens button color when hovered */
 .filter-btn:hover {
     background: #374151;
 }
 
+/* Highlights the selected filter with a green gradient */
 .filter-btn.active-filter {
     background: linear-gradient(to right, #10b981, #059669);
     color: white;
     border: none;
 }
 
-/* Listing Cards */
+/* =======================
+   LISTING CARDS
+   ======================= */
+/* Base style for product listing cards with blurred background and smooth hover lift */
 .listing-card {
     background: rgba(30, 41, 59, 0.5);
     backdrop-filter: blur(8px);
@@ -43,22 +53,28 @@
     transition: all 0.3s ease;
 }
 
+/* Adds shadow and slight elevation on hover */
 .listing-card:hover {
     border-color: rgba(16, 185, 129, 0.3);
     transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
+/* Gradient accent bar for listing cards */
 .listing-gradient-bar {
     height: 0.75rem;
     width: 100%;
 }
 
-/* Image Gallery */
+/* =======================
+   IMAGE GALLERY
+   ======================= */
 .image-gallery {
     position: relative;
 }
 
+/* Main product image area */
 .main-image {
     aspect-ratio: 4 / 3;
     background: rgba(30, 41, 59, 0.3);
@@ -67,8 +83,8 @@
     justify-content: center;
 }
 
+/* Thumbnail images below main gallery */
 .thumbnail {
-    flex-shrink: 0;
     width: 4rem;
     height: 4rem;
     border-radius: 0.5rem;
@@ -78,15 +94,20 @@
     transition: all 0.3s ease;
 }
 
+/* Hover effect for thumbnails */
 .thumbnail:hover {
     border-color: #64748b;
 }
 
+/* Highlight selected thumbnail */
 .thumbnail.active {
     border-color: #10b981;
 }
 
-/* Stats Grid */
+/* =======================
+   STATISTICS GRID
+   ======================= */
+/* Grid layout for displaying stats (responsive) */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -99,6 +120,7 @@
     }
 }
 
+/* Individual stat cards */
 .stat-card {
     background: rgba(30, 41, 59, 0.5);
     border: 1px solid rgba(100, 116, 139, 0.5);
@@ -107,7 +129,10 @@
     text-align: center;
 }
 
-/* Auth Components */
+/* =======================
+   AUTHENTICATION FORMS
+   ======================= */
+/* Card design for login/register forms */
 .auth-card {
     background: rgba(30, 41, 59, 0.5);
     backdrop-filter: blur(8px);
@@ -116,7 +141,10 @@
     padding: 2rem;
 }
 
-/* Seller Dashboard */
+/* =======================
+   SELLER DASHBOARD
+   ======================= */
+/* Responsive grid layout for seller dashboard */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -129,13 +157,17 @@
     }
 }
 
-/* Quantity Selector */
+/* =======================
+   QUANTITY SELECTOR
+   ======================= */
+/* Quantity counter layout with +/- buttons */
 .quantity-selector {
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
+/* Increment/decrement button styles */
 .quantity-btn {
     width: 2.5rem;
     height: 2.5rem;
@@ -150,6 +182,7 @@
     transition: all 0.3s ease;
 }
 
+/* Hover and disabled states */
 .quantity-btn:hover:not(:disabled) {
     background: rgba(30, 41, 59, 0.7);
 }
@@ -160,6 +193,7 @@
     cursor: not-allowed;
 }
 
+/* Input box showing current quantity */
 .quantity-input {
     flex: 1;
     text-align: center;
@@ -170,7 +204,9 @@
     color: white;
 }
 
-/* Price Breakdown */
+/* =======================
+   PRICE BREAKDOWN CARD
+   ======================= */
 .price-breakdown {
     background: rgba(30, 41, 59, 0.3);
     border: 1px solid rgba(100, 116, 139, 0.5);
@@ -178,7 +214,9 @@
     padding: 1rem;
 }
 
-/* Alert Boxes */
+/* =======================
+   ALERT BOXES
+   ======================= */
 .alert-warning {
     background: rgba(120, 53, 15, 0.3);
     border: 1px solid rgba(180, 83, 9, 0.5);
@@ -193,7 +231,10 @@
     padding: 0.75rem;
 }
 
-/* Star Rating */
+/* =======================
+   STAR RATING COMPONENT
+   ======================= */
+/* Displays rating stars in row, with filled/half-filled states */
 .star-rating {
     display: flex;
     align-items: center;
@@ -212,7 +253,11 @@
 .star.half-filled {
     color: #fbbf24;
 }
-/* Mobile Navigation */
+
+/* =======================
+   MOBILE NAVIGATION MENU
+   ======================= */
+/* Navigation buttons visible on mobile screens */
 .mobile-nav {
     display: block;
     padding: 0.75rem 1rem;
@@ -229,7 +274,7 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile menu animation */
+/* Simple fade + slide animation for mobile dropdown */
 #mobileMenu {
     transition: all 0.3s ease;
 }
