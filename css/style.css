@@ -1,10 +1,15 @@
-/* Main Styles */
+/* =======================
+   MAIN GLOBAL STYLES
+   ======================= */
+
+/* Reset browser defaults and make sizing predictable */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Base body styling — sets font, colors, and background gradient */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
@@ -12,20 +17,26 @@ body {
     color: white;
 }
 
+/* Reusable gradient background class */
 .gradient-bg {
     background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #064e3b);
 }
 
+/* Base layout setup for pages — hidden by default */
 .page {
     display: none;
     min-height: 100vh;
 }
 
+/* Shows only the currently active page */
 .active-page {
     display: block;
 }
 
-/* Navigation */
+/* =======================
+   NAVIGATION LINKS
+   ======================= */
+/* Basic navigation link styling with hover transition */
 .nav-link {
     background: none;
     border: none;
@@ -36,12 +47,16 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Highlight nav link on hover */
 .nav-link:hover {
     color: white;
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Cards and Components */
+/* =======================
+   CARD COMPONENTS
+   ======================= */
+/* Standard glass-style cards with smooth hover effect */
 .card {
     background: rgba(30, 41, 59, 0.5);
     backdrop-filter: blur(8px);
@@ -50,12 +65,14 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Adds depth and shadow when hovered */
 .card:hover {
     border-color: rgba(16, 185, 129, 0.3);
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+/* Alternate hover class used for other components */
 .card-hover {
     transition: all 0.3s ease;
 }
@@ -65,7 +82,10 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* Form Elements */
+/* =======================
+   FORM ELEMENTS
+   ======================= */
+/* Input boxes with transparent glass background */
 .form-input {
     background: rgba(30, 41, 59, 0.3);
     border: 1px solid #475569;
@@ -76,17 +96,22 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Glowing border when input is focused */
 .form-input:focus {
     outline: none;
     border-color: #10b981;
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
+/* Light placeholder text */
 .form-input::placeholder {
     color: #94a3b8;
 }
 
-/* Buttons */
+/* =======================
+   BUTTON STYLES
+   ======================= */
+/* Primary green gradient button used for main actions */
 .btn-primary {
     background: linear-gradient(to right, #10b981, #059669);
     color: white;
@@ -98,11 +123,13 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Slight scale and color change on hover */
 .btn-primary:hover {
     background: linear-gradient(to right, #059669, #047857);
     transform: scale(1.05);
 }
 
+/* Secondary transparent button for less important actions */
 .btn-secondary {
     background: rgba(30, 41, 59, 0.5);
     color: white;
@@ -118,7 +145,10 @@ body {
     background: rgba(30, 41, 59, 0.7);
 }
 
-/* Utility Classes */
+/* =======================
+   UTILITY CLASSES
+   ======================= */
+/* Gradient-colored text using background clipping */
 .text-gradient {
     background: linear-gradient(to right, #10b981, #059669);
     -webkit-background-clip: text;
@@ -126,12 +156,13 @@ body {
     background-clip: text;
 }
 
+/* Gradient border used for emphasis boxes */
 .border-gradient {
     border: 1px solid;
     border-image: linear-gradient(to right, #10b981, #059669) 1;
 }
 
-/* Scrollbar */
+/* Hide scrollbars visually but keep scroll functionality */
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -141,19 +172,22 @@ body {
     display: none;
 }
 
-/* Loading States */
+/* Apply opacity during loading states */
 .loading {
     opacity: 0.6;
     pointer-events: none;
 }
 
-/* Responsive */
+/* =======================
+   RESPONSIVE DESIGN
+   ======================= */
+/* Adjust layout for smaller screens */
 @media (max-width: 768px) {
     .mobile-hidden {
-        display: none;
+        display: none; /* hides elements not needed on mobile */
     }
     
     .mobile-full {
-        width: 100%;
+        width: 100%; /* full width on mobile */
     }
 }
