@@ -1,81 +1,96 @@
+<!-- Cleanly Re-commented 404 HTML File -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Set character encoding -->
     <meta charset="UTF-8">
+
+    <!-- Responsive viewport for mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Base URL so relative paths work across folders -->
     <base href="/ICT-Project-2/">
+
+    <!-- Page Title -->
     <title>404 - Page Not Found | ScrapSmart</title>
+
+    <!-- Browser tab icon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom global styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
+
+    <!-- Inline animation styles for the 404 page -->
     <style>
+        /* Floating animation for the recycling icon */
         .error-illustration {
             animation: float 3s ease-in-out infinite;
         }
-        
+
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
-        
+
+        /* Glitch animation for the "404" text */
         .glitch {
             animation: glitch 1s linear infinite;
         }
-        
+
         @keyframes glitch {
-            2%, 64% {
-                transform: translate(2px, 0) skew(0deg);
-            }
-            4%, 60% {
-                transform: translate(-2px, 0) skew(0deg);
-            }
-            62% {
-                transform: translate(0, 0) skew(5deg);
-            }
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
         }
-        
+
+        /* Fade-in upward animation */
         .fade-in-up {
             animation: fadeInUp 0.6s ease-out;
         }
-        
+
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body class="min-h-screen gradient-bg">
-    <!-- Navigation Header -->
+
+    <!-- ============================= -->
+    <!--        Navigation Header       -->
+    <!-- ============================= -->
     <header class="header">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
+
+                <!-- Logo + Brand Name -->
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-recycle text-emerald-400 text-xl"></i>
                     <a href="index.html" class="text-xl font-bold">ScrapSmart</a>
                 </div>
+
+                <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-6">
                     <a href="index.html" class="nav-link">Home</a>
                     <a href="listings.html" class="nav-link">Buy Scrap</a>
                     <a href="seller.html" class="nav-link">Sell Scrap</a>
                     <a href="auth.html" class="nav-link">Login/Signup</a>
                 </nav>
+
+                <!-- Mobile Menu Toggle Button -->
                 <button class="md:hidden text-slate-300" id="mobileMenuBtn">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
-            <!-- Mobile Menu -->
+
+            <!-- Mobile Navigation Menu -->
             <div id="mobileMenu" class="md:hidden mt-4 hidden">
                 <div class="flex flex-col space-y-2">
                     <a href="index.html" class="nav-link mobile-nav">Home</a>
@@ -87,82 +102,76 @@
         </div>
     </header>
 
-    <!-- 404 Error Content -->
+    <!-- ============================= -->
+    <!--        404 Error Section       -->
+    <!-- ============================= -->
     <main class="min-h-[80vh] flex items-center justify-center px-4 py-16">
         <div class="max-w-2xl mx-auto text-center">
-            <!-- Error Illustration -->
+
+            <!-- Error Illustration Floating Icon -->
             <div class="error-illustration mb-8">
                 <div class="relative inline-block">
-                    <!-- Recycling icon with glow effect -->
+                    <!-- Glow effect behind icon -->
                     <div class="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full"></div>
+
+                    <!-- Recycling logo circle -->
                     <div class="relative w-32 h-32 mx-auto mb-6 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
                         <i class="fas fa-recycle text-6xl text-white"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- 404 Number -->
+            <!-- 404 Glitch Heading -->
             <div class="fade-in-up">
                 <h1 class="text-8xl md:text-9xl font-bold mb-4">
                     <span class="text-gradient glitch">404</span>
                 </h1>
             </div>
 
-            <!-- Error Message -->
+            <!-- Main Error Text -->
             <div class="fade-in-up" style="animation-delay: 0.2s;">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                    Page Not Found
-                </h2>
-                <p class="text-xl text-slate-300 mb-3">
-                    Oops! Looks like this scrap got recycled already.
-                </p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Page Not Found</h2>
+                <p class="text-xl text-slate-300 mb-3">Oops! Looks like this scrap got recycled already.</p>
                 <p class="text-lg text-slate-400 mb-8 max-w-lg mx-auto">
                     The page you're looking for doesn't exist or has been moved to a different location.
                 </p>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Navigation Action Buttons -->
             <div class="fade-in-up flex flex-col sm:flex-row gap-4 justify-center items-center" style="animation-delay: 0.4s;">
                 <a href="index.html" class="btn-primary inline-flex items-center">
-                    <i class="fas fa-home mr-2"></i>
-                    Return to Homepage
+                    <i class="fas fa-home mr-2"></i>Return to Homepage
                 </a>
                 <a href="listings.html" class="btn-secondary inline-flex items-center">
-                    <i class="fas fa-shopping-cart mr-2"></i>
-                    Browse Listings
+                    <i class="fas fa-shopping-cart mr-2"></i>Browse Listings
                 </a>
             </div>
 
-            <!-- Helpful Links -->
+            <!-- Helpful Shortcut Links -->
             <div class="fade-in-up mt-12 pt-8 border-t border-slate-700/50" style="animation-delay: 0.6s;">
                 <p class="text-slate-400 mb-4">Or try one of these popular pages:</p>
                 <div class="flex flex-wrap justify-center gap-4">
                     <a href="seller.html" class="text-emerald-400 hover:text-emerald-300 transition-colors">
-                        <i class="fas fa-store mr-1"></i>
-                        Sell Scrap
+                        <i class="fas fa-store mr-1"></i>Sell Scrap
                     </a>
                     <a href="auth.html" class="text-emerald-400 hover:text-emerald-300 transition-colors">
-                        <i class="fas fa-user mr-1"></i>
-                        Login/Signup
+                        <i class="fas fa-user mr-1"></i>Login/Signup
                     </a>
                     <a href="index.html#categories" class="text-emerald-400 hover:text-emerald-300 transition-colors">
-                        <i class="fas fa-th-large mr-1"></i>
-                        Categories
+                        <i class="fas fa-th-large mr-1"></i>Categories
                     </a>
                 </div>
             </div>
 
-            <!-- Search Box -->
+            <!-- Search Bar -->
             <div class="fade-in-up mt-8 max-w-md mx-auto" style="animation-delay: 0.8s;">
                 <div class="card p-4">
                     <p class="text-slate-300 mb-3 text-sm">Looking for something specific?</p>
                     <form action="listings.html" method="get" class="flex gap-2">
-                        <input
-                            type="text"
-                            name="search"
-                            placeholder="Search listings..."
-                            class="form-input flex-1"
-                        />
+                        <!-- Search Input -->
+                        <input type="text" name="search" placeholder="Search listings..." class="form-input flex-1" />
+
+                        <!-- Submit Button -->
                         <button type="submit" class="btn-primary px-6">
                             <i class="fas fa-search"></i>
                         </button>
@@ -172,19 +181,23 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- ============================= -->
+    <!--              Footer           -->
+    <!-- ============================= -->
     <footer class="bg-slate-900/80 border-t border-slate-700/50 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+                <!-- Footer Branding -->
                 <div>
                     <div class="flex items-center space-x-2 mb-4">
                         <i class="fas fa-recycle text-emerald-400 text-xl"></i>
                         <h3 class="text-xl font-bold">ScrapSmart</h3>
                     </div>
-                    <p class="text-slate-400">
-                        Connecting scrap sellers with buyers in a seamless, transparent marketplace.
-                    </p>
+                    <p class="text-slate-400">Connecting scrap sellers with buyers in a seamless, transparent marketplace.</p>
                 </div>
+
+                <!-- Quick Links Column -->
                 <div>
                     <h4 class="font-semibold mb-4">Quick Links</h4>
                     <ul class="space-y-2 text-slate-400">
@@ -194,6 +207,8 @@
                         <li><a href="auth.html" class="hover:text-white transition-colors">Login/Signup</a></li>
                     </ul>
                 </div>
+
+                <!-- Category Links -->
                 <div>
                     <h4 class="font-semibold mb-4">Categories</h4>
                     <ul class="space-y-2 text-slate-400">
@@ -203,39 +218,44 @@
                         <li><a href="listings.html?category=automotive" class="hover:text-white transition-colors">Automotive</a></li>
                     </ul>
                 </div>
+
+                <!-- Contact Information -->
                 <div>
                     <h4 class="font-semibold mb-4">Contact Us</h4>
                     <ul class="space-y-2 text-slate-400">
-                        <li class="flex items-center">
-                            <i class="fas fa-envelope mr-2"></i>
-                            info@scrapsmart.com
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-phone mr-2"></i>
-                            +975 17518738
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-map-marker-alt mr-2"></i>
-                            Thimphu, Bhutan
-                        </li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i>info@scrapsmart.com</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i>+975 17518738</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>Thimphu, Bhutan</li>
                     </ul>
                 </div>
             </div>
+
+            <!-- Footer Bottom Text -->
             <div class="border-t border-slate-700/50 mt-8 pt-6 text-center text-slate-400">
                 <p>&copy; 2024 ScrapSmart. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- ============================= -->
+    <!--        JavaScript Scripts      -->
+    <!-- ============================= -->
+
+    <!-- Main global JS file -->
     <script src="js/main.js"></script>
+
     <script>
-        // Mobile menu functionality
+        /* ------------------------------
+           Mobile Menu Toggle Script
+        ------------------------------ */
         document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
             const mobileMenu = document.getElementById('mobileMenu');
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Track 404 error (optional analytics)
+        /* ------------------------------
+           Console Log for 404 Tracking
+        ------------------------------ */
         console.log('404 Error - Page not found:', window.location.href);
     </script>
 </body>
